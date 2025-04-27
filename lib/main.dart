@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:propapp/screen/splash_screen.dart';
+
 import 'utils/routes.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MiniEduApp extends StatelessWidget {
       title: 'PropApp',
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
-      routes: {'/': (context) => const SplashScreen()},
+      routes: appRoutes,
     );
   }
 }

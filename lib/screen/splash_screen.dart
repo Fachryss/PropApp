@@ -5,35 +5,59 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.casino, size: 24),
-                SizedBox(width: 8),
-                Text(
-                  'PROAPP',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 28,
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacementNamed(context, '/intro');
+    });
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Menambah jarak vertikal di atas teks PROAPP
+                  const SizedBox(height: 80), // Menambahkan jarak ke atas
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/dadu.png',
+                        width: 75,
+                        height: 75,
+                      ),
+                      const SizedBox(),
+                      const Text(
+                        'PROAPP',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 30,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Application for Probability Lesson',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 14,
+                  const SizedBox(), // Menambah jarak antara "PROAPP" dan deskripsi
+                  const Text(
+                    'Application for Probability Lesson',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: Image.asset(
+              'assets/images/robot.png',
+              fit: BoxFit.cover, // Ganti dengan gambar bawah kamu
+            ),
+          ),
+        ],
       ),
     );
   }
