@@ -59,8 +59,10 @@ flutter:
   uses-material-design: true
 
   assets:
+  - assets/image/
   - assets/images/dadu.png
   - assets/images/robot.png
+  - assets/image/koin.png
   fonts:
     - family: Poppins
       fonts:
@@ -70,9 +72,7 @@ flutter:
 
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - assets/image/
-  # #   - images/a_dot_ham.jpeg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
