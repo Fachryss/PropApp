@@ -31,7 +31,7 @@ Map<String, bool> options = {
                 'Apa yang mendasari\njawabanmu tersebut?',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                   color: Colors.black,
                 ),
               ),

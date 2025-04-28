@@ -96,9 +96,9 @@ class _ProbabilitySelectionPageState extends State<ProbabilitySelectionPage> {
                           onPressed: () {
                             // Navigate to the appropriate page based on selection
                             if (selectedOption == 'dice') {
-                              Navigator.pushNamed(context, '/dice_probability');
+                              Navigator.pushNamed(context, '/dice');
                             } else {
-                              Navigator.pushNamed(context, '/coin_probability');
+                              Navigator.pushNamed(context, '/dice');
                             }
                           },
                           style: ElevatedButton.styleFrom(

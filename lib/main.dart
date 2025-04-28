@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:propapp/screen/dice_experiment.dart';
+import 'package:propapp/screen/dice_table_1.dart';
 import 'utils/routes.dart';
 
 void main() {
@@ -7,7 +9,6 @@ void main() {
 
 class MiniEduApp extends StatelessWidget {
   const MiniEduApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,7 +27,10 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      initialRoute: '/',
+      home: DiceResultsTablePage(
+        totalRolls: 100, // Example value for totalRolls
+        results: {}, // Example value for results
+      ), // Directly navigate to DiceExperimentPage
       routes: appRoutes,
     );
   }
