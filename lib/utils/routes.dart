@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:propapp/screen/question_checkbox_2.dart';
 import '../screen/splash_screen.dart';
 import '../screen/intro_page.dart';
 import '../screen/critical/critical_1.dart';
@@ -16,7 +17,8 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/critical2': (_) => const Critical2Page(),
   '/critical3': (_) => const Critical3Page(),
   '/checkbox': (_) => const QuestionCheckboxPage(),
-  '/interactive': (_) => const InteractivePage(),
+  '/checkbox2': (_) => const QuestionCheckboxPage2(),
+  '/interactive': (_) => const ProbabilitySelectionPage(),
   '/multiple': (_) => const MultipleChoicePage(),
   '/closing': (_) => const ClosingPage(),
 };

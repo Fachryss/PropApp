@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class QuestionCheckboxPage extends StatefulWidget {
-  const QuestionCheckboxPage({super.key});
+class QuestionCheckboxPage2 extends StatefulWidget {
+  const QuestionCheckboxPage2({super.key});
 
   @override
-  State<QuestionCheckboxPage> createState() => _QuestionCheckboxPageState();
+  State<QuestionCheckboxPage2> createState() => _QuestionCheckboxPageState();
 }
 
-class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
-  Map<String, bool> options = {
-    'Satin': false,
-    'Sutra': false,
-    'Sifon': false,
-  };
+class _QuestionCheckboxPageState extends State<QuestionCheckboxPage2> {
+Map<String, bool> options = {
+  'Jumlah penjualan gaun terbanyak.': false,
+  'Jumlah complain paling sedikit.': false,
+  'Perbandingan jumlah complain\ndengan jumlah penjualannya.': false,
+};
 
   bool get hasSelection => options.values.any((isSelected) => isSelected);
 
@@ -28,7 +28,7 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
             children: [
               const SizedBox(height: 16),
               const Text(
-                'Gaun berbahan apa yang akan\nkamu rekomendesaikan?',
+                'Apa yang mendasari\njawabanmu tersebut?',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -44,11 +44,11 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
                 ),
               ),
               const SizedBox(height: 24),
-              _buildOptionItem('Satin', Icons.auto_awesome, options['Satin']!),
+              _buildOptionItem('Jumlah penjualan gaun terbanyak.', Icons.trending_up, options['Jumlah penjualan gaun terbanyak.']!),
               const SizedBox(height: 16),
-              _buildOptionItem('Sutra', Icons.palette, options['Sutra']!),
+              _buildOptionItem('Jumlah complain paling sedikit.', Icons.trending_down, options['Jumlah complain paling sedikit.']!),
               const SizedBox(height: 16),
-              _buildOptionItem('Sifon', Icons.texture, options['Sifon']!),
+              _buildOptionItem('Perbandingan jumlah complain\ndengan jumlah penjualannya.', Icons.trending_neutral, options['Perbandingan jumlah complain\ndengan jumlah penjualannya.']!),
               const Spacer(),
               // Next button that appears only when at least one option is selected
               AnimatedOpacity(
@@ -61,7 +61,7 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
                   child: hasSelection
                       ? ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/checkbox2');
+                            Navigator.pushNamed(context, '/interactive');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF1D2939),
@@ -110,7 +110,7 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
               Text(
                 text,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),

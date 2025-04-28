@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:propapp/screen/splash_screen.dart';
 import 'utils/routes.dart';
 
 void main() {
@@ -14,8 +13,21 @@ class MiniEduApp extends StatelessWidget {
     return MaterialApp(
       title: 'PropApp',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: 'Poppins', // Set Poppins as the default font
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(fontFamily: 'Poppins'),
+          bodyMedium: TextStyle(fontFamily: 'Poppins'),
+          displayLarge: TextStyle(fontFamily: 'Poppins'),
+          displayMedium: TextStyle(fontFamily: 'Poppins'),
+          displaySmall: TextStyle(fontFamily: 'Poppins'),
+          headlineMedium: TextStyle(fontFamily: 'Poppins'),
+          headlineSmall: TextStyle(fontFamily: 'Poppins'),
+          titleLarge: TextStyle(fontFamily: 'Poppins'),
+        ),
+      ),
       initialRoute: '/',
-      routes: {'/': (context) => const SplashScreen()},
+      routes: appRoutes,
     );
   }
 }
