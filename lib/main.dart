@@ -30,7 +30,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      home: QuestionCheckboxPage(), // Directly navigate to DiceExperimentPage
+      home: MultipleChoicePage(), // Directly navigate to DiceExperimentPage
       routes: appRoutes,
     );
   }

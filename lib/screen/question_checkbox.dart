@@ -18,7 +18,7 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
+          padding: EdgeInsets.fromLTRB(25, 20, 25, 51),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,7 +37,7 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black54,
+                  color: Color(0xFF6B7280),
                 ),
               ),
               const SizedBox(height: 30),
@@ -196,7 +196,7 @@ class _AnimatedCheckboxState extends State<AnimatedCheckbox>
       decoration: BoxDecoration(
         color: widget.isChecked ? Color(0xFF1F2937) : Colors.transparent,
         border: Border.all(
-          color: widget.isChecked ? Color(0xFF1F2937) : Colors.black38,
+          color: widget.isChecked ? Color(0xFF1F2937) : Color(0xFF6B7280),
           width: 1.5,
           style: BorderStyle.solid,
         ),
