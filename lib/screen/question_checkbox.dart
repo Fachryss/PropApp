@@ -8,13 +8,9 @@ class QuestionCheckboxPage extends StatefulWidget {
 }
 
 class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
-  Map<String, bool> options = {
-    'Satin': false,
-    'Sutra': false,
-    'Sifon': false,
-  };
+  String? selcetedOption;
 
-  bool get hasSelection => options.values.any((isSelected) => isSelected);
+  bool get hasSelection => selcetedOption != null;
 
   @override
   Widget build(BuildContext context) {
@@ -22,33 +18,34 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
               const Text(
-                'Gaun berbahan apa yang akan\nkamu rekomendesaikan?',
+                'Gaun berbahan apa yang akan\nkamu rekomendasikan?',
                 style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  fontSize: 23,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF1F2937),
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 13),
               const Text(
                 'Pilihlah berdasarkan analisismu dari masalah sebelumnya.',
                 style: TextStyle(
                   fontSize: 14,
+                  fontWeight: FontWeight.w500,
                   color: Colors.black54,
                 ),
               ),
-              const SizedBox(height: 24),
-              _buildOptionItem('Satin', Icons.auto_awesome, options['Satin']!),
-              const SizedBox(height: 16),
-              _buildOptionItem('Sutra', Icons.palette, options['Sutra']!),
-              const SizedBox(height: 16),
-              _buildOptionItem('Sifon', Icons.texture, options['Sifon']!),
+              const SizedBox(height: 30),
+              _buildOptionItem('Satin', Icons.auto_awesome_outlined),
+              const SizedBox(height: 27),
+              _buildOptionItem('Sutra', Icons.palette_outlined),
+              const SizedBox(height: 27),
+              _buildOptionItem('Sifon', Icons.energy_savings_leaf_outlined),
               const Spacer(),
               // Next button that appears only when at least one option is selected
               AnimatedOpacity(
@@ -67,16 +64,16 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
                             backgroundColor: const Color(0xFF1D2939),
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(28),
+                              borderRadius: BorderRadius.circular(25),
                             ),
                           ),
-                            child: const Text(
+                          child: const Text(
                             'Go to next question',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 20,
                               fontWeight: FontWeight.w600,
                             ),
-                            ),
+                          ),
                         )
                       : null,
                 ),
@@ -88,11 +85,12 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
     );
   }
 
-  Widget _buildOptionItem(String text, IconData iconData, bool isSelected) {
+  Widget _buildOptionItem(String text, IconData iconData) {
+    final isSelected = selcetedOption == text;
     return GestureDetector(
       onTap: () {
         setState(() {
-          options[text] = !options[text]!;
+          selcetedOption = isSelected ? null : text;
         });
       },
       child: Row(
@@ -103,21 +101,21 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
             children: [
               Icon(
                 iconData,
-                size: 24,
-                color: Colors.black54,
+                size: 25,
+                color: Color(0xFF1F2937),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 15),
               Text(
                 text,
                 style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF1F2937),
                 ),
               ),
             ],
           ),
-          
+
           // Animated checkbox
           AnimatedCheckbox(isChecked: isSelected),
         ],
@@ -128,7 +126,7 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
 
 class AnimatedCheckbox extends StatefulWidget {
   final bool isChecked;
-  
+
   const AnimatedCheckbox({
     super.key,
     required this.isChecked,
@@ -138,11 +136,12 @@ class AnimatedCheckbox extends StatefulWidget {
   State<AnimatedCheckbox> createState() => _AnimatedCheckboxState();
 }
 
-class _AnimatedCheckboxState extends State<AnimatedCheckbox> with SingleTickerProviderStateMixin {
+class _AnimatedCheckboxState extends State<AnimatedCheckbox>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
-  
+
   @override
   void initState() {
     super.initState();
@@ -150,26 +149,26 @@ class _AnimatedCheckboxState extends State<AnimatedCheckbox> with SingleTickerPr
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-    
+
     _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.elasticOut,
       ),
     );
-    
+
     _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeInOut,
       ),
     );
-    
+
     if (widget.isChecked) {
       _animationController.value = 1.0;
     }
   }
-  
+
   @override
   void didUpdateWidget(AnimatedCheckbox oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -181,46 +180,48 @@ class _AnimatedCheckboxState extends State<AnimatedCheckbox> with SingleTickerPr
       }
     }
   }
-  
+
   @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      width: 24,
-      height: 24,
+      width: 25,
+      height: 25,
       decoration: BoxDecoration(
-        color: widget.isChecked ? Colors.blue.withOpacity(0.1) : Colors.transparent,
+        color: widget.isChecked ? Color(0xFF1F2937) : Colors.transparent,
         border: Border.all(
-          color: widget.isChecked ? Colors.blue : Colors.black45,
+          color: widget.isChecked ? Color(0xFF1F2937) : Colors.black38,
           width: 1.5,
           style: BorderStyle.solid,
         ),
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(5),
       ),
-      child: widget.isChecked ? Center(
-        child: AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _scaleAnimation.value,
-              child: Opacity(
-                opacity: _opacityAnimation.value,
-                child: const Icon(
-                  Icons.check,
-                  size: 18,
-                  color: Colors.blue,
-                ),
+      child: widget.isChecked
+          ? Center(
+              child: AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: Opacity(
+                      opacity: _opacityAnimation.value,
+                      child: const Icon(
+                        Icons.check,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
-      ) : null,
+            )
+          : null,
     );
   }
 }

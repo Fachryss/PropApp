@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:propapp/screen/dice_experiment.dart';
 import 'package:propapp/screen/dice_table_1.dart';
+import 'package:propapp/screen/multiple_choice_page.dart';
+import 'package:propapp/screen/question_checkbox.dart';
+import 'package:propapp/screen/question_checkbox_2.dart';
 import 'utils/routes.dart';
 
 void main() {
@@ -27,10 +30,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      home: DiceResultsTablePage(
-        totalRolls: 100, // Example value for totalRolls
-        results: {}, // Example value for results
-      ), // Directly navigate to DiceExperimentPage
+      home: QuestionCheckboxPage(), // Directly navigate to DiceExperimentPage
       routes: appRoutes,
     );
   }
