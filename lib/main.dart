@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:propapp/screen/dice_experiment.dart';
 import 'package:propapp/screen/dice_table_1.dart';
+import 'package:propapp/screen/interactive_page.dart';
 import 'utils/routes.dart';
 
 void main() {
@@ -27,10 +28,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      home: DiceResultsTablePage(
-        totalRolls: 100, // Example value for totalRolls
-        results: {}, // Example value for results
-      ), // Directly navigate to DiceExperimentPage
+      home: ProbabilitySelectionPage(),
       routes: appRoutes,
     );
   }

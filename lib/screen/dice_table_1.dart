@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DiceResultsTablePage extends StatelessWidget {
+class DiceResultsTablePage1 extends StatelessWidget {
   final int totalRolls;
   final Map<String, int> results;
 
-  const DiceResultsTablePage({
+  const DiceResultsTablePage1({
     super.key, 
     required this.totalRolls,
     required this.results,
@@ -52,7 +52,7 @@ class DiceResultsTablePage extends StatelessWidget {
                 ),
               ),
               
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
               
               // Table header with icons
               Row(
@@ -226,7 +226,7 @@ class DiceExperimentResults extends StatelessWidget {
     
     final int totalRolls = 100; // Example: 100 rolls
 
-    return DiceResultsTablePage(
+    return DiceResultsTablePage1(
       totalRolls: totalRolls,
       results: mockResults,
     );

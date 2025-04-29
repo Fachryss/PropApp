@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:propapp/screen/dice_table_1.dart';
 
 class DiceExperimentPage extends StatefulWidget {
   const DiceExperimentPage({super.key});
@@ -9,7 +10,13 @@ class DiceExperimentPage extends StatefulWidget {
 
 class _DiceExperimentPageState extends State<DiceExperimentPage> {
   String? selectedOption;
-  final List<String> options = ['30 Kali', '100 Kali', '200 Kali', '500 Kali', '1000 Kali'];
+  final List<String> options = [
+    '30 Kali',
+    '100 Kali',
+    '200 Kali',
+    '500 Kali',
+    '1000 Kali'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,8 @@ class _DiceExperimentPageState extends State<DiceExperimentPage> {
             children: [
               // Header section
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1D2939),
                   borderRadius: BorderRadius.circular(8),
@@ -37,9 +45,9 @@ class _DiceExperimentPageState extends State<DiceExperimentPage> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Instruction text
               const Text(
                 'Anda bisa memilih beberapa kali percobaan yang ingin anda lakukan.',
@@ -49,52 +57,70 @@ class _DiceExperimentPageState extends State<DiceExperimentPage> {
                   // color: Colors.black54,
                 ),
               ),
-              
+
               const SizedBox(height: 36),
-              
+
               // Option buttons
               ...options.map((option) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: _buildOptionButton(option),
-              )),
-              
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _buildOptionButton(option),
+                  )),
+
               const Spacer(),
-              
+
               // Bottom button
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: selectedOption != null 
-                    ? () {
-                        // Navigate to dice rolling animation or results
-                        Navigator.pushNamed(
-                          context, 
-                          '/dice_rolling', 
-                          arguments: int.parse(selectedOption!.split(' ')[0])
-                        );
-                      }
-                    : null,
+                  onPressed: selectedOption != null
+                      ? () {
+                          final int numberOfRolls =
+                              int.parse(selectedOption!.split(' ')[0]);
+
+                          // Mock results for demonstration purposes
+                          final Map<String, int> mockResults = {
+                            '1': (numberOfRolls * 0.15).round(),
+                            '2': (numberOfRolls * 0.17).round(),
+                            '3': (numberOfRolls * 0.12).round(),
+                            '4': (numberOfRolls * 0.14).round(),
+                            '5': (numberOfRolls * 0.21).round(),
+                            '6': (numberOfRolls * 0.21).round(),
+                          };
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DiceResultsTablePage1(
+                                totalRolls: numberOfRolls,
+                                results: mockResults,
+                              ),
+                            ),
+                          );
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedOption != null 
-                      ? const Color(0xFF1D2939) 
-                      : Colors.grey.shade200,
-                    foregroundColor: selectedOption != null 
-                      ? Colors.white 
-                      : Colors.grey.shade700,
+                    backgroundColor: selectedOption != null
+                        ? const Color(0xFF1D2939)
+                        : Colors.grey.shade200,
+                    foregroundColor: selectedOption != null
+                        ? Colors.white
+                        : Colors.grey.shade700,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28),
                     ),
                     elevation: 0,
                   ),
                   child: Text(
-                    selectedOption != null ? 'Roll the dice' : 'Choose how many times',
+                    selectedOption != null
+                        ? 'Roll the dice'
+                        : 'Choose how many times',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: selectedOption != null 
-                        ? Colors.white 
-                        : Colors.grey.shade700,
+                      color: selectedOption != null
+                          ? Colors.white
+                          : Colors.grey.shade700,
                     ),
                   ),
                 ),
@@ -108,7 +134,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage> {
 
   Widget _buildOptionButton(String option) {
     final isSelected = selectedOption == option;
-    
+
     return InkWell(
       onTap: () {
         setState(() {
