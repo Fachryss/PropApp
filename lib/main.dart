@@ -14,7 +14,7 @@ class MiniEduApp extends StatelessWidget {
     return MaterialApp(
       title: 'PropApp',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/critical1',
       routes: appRoutes,
     );
   }
