@@ -22,40 +22,45 @@ class DiceResultsTablePage1 extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          padding: const EdgeInsets.fromLTRB(25, 20, 25, 51),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 16,
+              ),
               // Header section
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1D2939),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  'Percobaan 1',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1D2939),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                ),
-              ),
+                  child: const IntrinsicWidth(
+                    child: Center(
+                      child: Text(
+                        "Percobaan 1",
+                        style: TextStyle(
+                            fontSize: 23,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                      ),
+                    ),
+                  )),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 13),
 
               // Description text
               const Text(
                 'Berikut adalah tabel hasil percobaan lemparan dadu dengan jumlah lemparan yang dipilih.',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.black54,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF6B7280),
                 ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 30),
 
               // Table header with icons
               Row(
@@ -112,17 +117,23 @@ class DiceResultsTablePage1 extends StatelessWidget {
               const SizedBox(height: 16),
 
               // Table rows for each dice face
-              _buildTableRow('1', results['1'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow(
+                  '1', results['1'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('2', results['2'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow(
+                  '2', results['2'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('3', results['3'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow(
+                  '3', results['3'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('4', results['4'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow(
+                  '4', results['4'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('5', results['5'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow(
+                  '5', results['5'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('6', results['6'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow(
+                  '6', results['6'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
 
               // Summary rows (Even and Odd)

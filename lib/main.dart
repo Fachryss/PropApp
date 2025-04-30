@@ -29,7 +29,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      home: ProbabilitySelectionPage(),
+      home: DiceExperimentPage(),
       routes: appRoutes,
     );
   }
