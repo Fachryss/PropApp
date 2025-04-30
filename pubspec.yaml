@@ -60,7 +60,7 @@ flutter:
   uses-material-design: true
 
   assets:
-  - assets/image/
+  - assets/image/PakRendi.png
   fonts:
     - family: Poppins
       fonts:
