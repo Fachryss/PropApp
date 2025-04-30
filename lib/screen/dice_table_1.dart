@@ -5,7 +5,7 @@ class DiceResultsTablePage1 extends StatelessWidget {
   final Map<String, int> results;
 
   const DiceResultsTablePage1({
-    super.key, 
+    super.key,
     required this.totalRolls,
     required this.results,
   });
@@ -13,8 +13,10 @@ class DiceResultsTablePage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Calculate total for even and odd numbers
-    final int evenTotal = (results['2'] ?? 0) + (results['4'] ?? 0) + (results['6'] ?? 0);
-    final int oddTotal = (results['1'] ?? 0) + (results['3'] ?? 0) + (results['5'] ?? 0);
+    final int evenTotal =
+        (results['2'] ?? 0) + (results['4'] ?? 0) + (results['6'] ?? 0);
+    final int oddTotal =
+        (results['1'] ?? 0) + (results['3'] ?? 0) + (results['5'] ?? 0);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -26,7 +28,8 @@ class DiceResultsTablePage1 extends StatelessWidget {
             children: [
               // Header section
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1D2939),
                   borderRadius: BorderRadius.circular(8),
@@ -40,9 +43,9 @@ class DiceResultsTablePage1 extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Description text
               const Text(
                 'Berikut adalah tabel hasil percobaan lemparan dadu dengan jumlah lemparan yang dipilih.',
@@ -51,9 +54,9 @@ class DiceResultsTablePage1 extends StatelessWidget {
                   color: Colors.black54,
                 ),
               ),
-              
+
               const SizedBox(height: 32),
-              
+
               // Table header with icons
               Row(
                 children: [
@@ -75,7 +78,8 @@ class DiceResultsTablePage1 extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Icon(Icons.table_chart_outlined, color: Colors.black54, size: 24),
+                        Icon(Icons.table_chart_outlined,
+                            color: Colors.black54, size: 24),
                         const SizedBox(height: 4),
                         const Text(
                           'Frekuensi',
@@ -104,30 +108,30 @@ class DiceResultsTablePage1 extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Table rows for each dice face
-              _buildTableRow('1', results['1'] ?? 15, totalRolls),
+              _buildTableRow('1', results['1'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('2', results['2'] ?? 17, totalRolls),
+              _buildTableRow('2', results['2'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('3', results['3'] ?? 12, totalRolls),
+              _buildTableRow('3', results['3'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('4', results['4'] ?? 14, totalRolls),
+              _buildTableRow('4', results['4'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('5', results['5'] ?? 21, totalRolls),
+              _buildTableRow('5', results['5'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              _buildTableRow('6', results['6'] ?? 21, totalRolls),
+              _buildTableRow('6', results['6'] ?? 0, results['total_rolls'] ?? 0),
               _buildDivider(),
-              
+
               // Summary rows (Even and Odd)
               _buildTableRow('Genap', evenTotal, totalRolls),
               _buildDivider(),
               _buildTableRow('Ganjil', oddTotal, totalRolls),
-              
+
               const Spacer(),
-              
+
               // Continue button
               SizedBox(
                 width: double.infinity,
@@ -223,7 +227,7 @@ class DiceExperimentResults extends StatelessWidget {
       '5': 21,
       '6': 21,
     };
-    
+
     final int totalRolls = 100; // Example: 100 rolls
 
     return DiceResultsTablePage1(

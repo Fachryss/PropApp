@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:propapp/screen/dice_table_1.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DiceExperimentPage extends StatefulWidget {
   const DiceExperimentPage({super.key});
@@ -17,6 +21,57 @@ class _DiceExperimentPageState extends State<DiceExperimentPage> {
     '500 Kali',
     '1000 Kali'
   ];
+
+  final Random _random = Random();
+
+  Future<Map<String, int>> _rollDice(int numberOfRolls) async {
+    final Map<String, int> results = {
+      '1': 0,
+      '2': 0,
+      '3': 0,
+      '4': 0,
+      '5': 0,
+      '6': 0,
+      'ganjil': 0,
+      'genap': 0,
+    };
+
+    for (int i = 0; i < numberOfRolls; i++) {
+      int roll = _random.nextInt(6) + 1;
+      results[roll.toString()] = (results[roll.toString()] ?? 0) + 1;
+
+      if (roll % 2 == 0){
+        results['ganjil'] = (results['ganjil'] ?? 0) + 1;
+      } else {
+        results['genap'] = (results['genap'] ?? 0) + 1;
+      }
+    }
+
+    await _saveResultsStorage(numberOfRolls, results);
+
+    return results;
+  }
+
+  Future<void> _saveResultsStorage(int totalRools, Map<String, int> result) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setInt('total_rolls_a', totalRools);
+
+    await prefs.setInt('dice_a_1', result['1'] ?? 0);
+    await prefs.setInt('dice_a_2', result['2'] ?? 0);
+    await prefs.setInt('dice_a_3', result['3'] ?? 0);
+    await prefs.setInt('dice_a_4', result['4'] ?? 0);
+    await prefs.setInt('dice_a_5', result['5'] ?? 0);
+    await prefs.setInt('dice_a_6', result['6'] ?? 0);
+
+    await prefs.setInt('dice_a_ganjil', result['ganjil'] ?? 0);
+    await prefs.setInt('dice_a_genap', result['genap'] ?? 0);
+
+    await prefs.setString('dice_result_a', jsonEncode(result));
+
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +96,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.white,  
                   ),
                 ),
               ),
@@ -74,26 +129,38 @@ class _DiceExperimentPageState extends State<DiceExperimentPage> {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: selectedOption != null
-                      ? () {
+                      ? () async {
                           final int numberOfRolls =
                               int.parse(selectedOption!.split(' ')[0]);
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              );
 
                           // Mock results for demonstration purposes
-                          final Map<String, int> mockResults = {
-                            '1': (numberOfRolls * 0.15).round(),
-                            '2': (numberOfRolls * 0.17).round(),
-                            '3': (numberOfRolls * 0.12).round(),
-                            '4': (numberOfRolls * 0.14).round(),
-                            '5': (numberOfRolls * 0.21).round(),
-                            '6': (numberOfRolls * 0.21).round(),
-                          };
+                          final Map<String, int> mockResults = await _rollDice(numberOfRolls);
 
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => DiceResultsTablePage1(
                                 totalRolls: numberOfRolls,
-                                results: mockResults,
+                                results: {
+                                  '1': mockResults['1'] ?? 0,
+                                  '2': mockResults['2'] ?? 0,
+                                  '3': mockResults['3'] ?? 0,
+                                  '4': mockResults['4'] ?? 0,
+                                  '5': mockResults['5'] ?? 0,
+                                  '6': mockResults['6'] ?? 0,
+                                  'ganjil': mockResults['ganjil'] ?? 0,
+                                  'genap': mockResults['genap'] ?? 0,
+                                  'total_rolls': numberOfRolls,
+                                },
                               ),
                             ),
                           );
