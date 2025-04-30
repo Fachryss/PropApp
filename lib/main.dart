@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:propapp/screen/answer_recap.dart';
 import 'package:propapp/screen/dice_experiment.dart';
 import 'package:propapp/screen/dice_table_1.dart';
 import 'package:propapp/screen/interactive_page.dart';
