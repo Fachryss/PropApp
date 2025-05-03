@@ -23,8 +23,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
   @override
   void initState() {
     super.initState();
-    // Ganti teks setelah 5 detik (bisa diubah sesuai kebutuhan)
-    Timer(Duration(seconds: 30), () {
+    Timer(Duration(seconds: 15), () {
       setState(() {
         currentText =
             "Kolom frekuensi berisi hasil random muncul mata dadu masing-masing, peluang empiris berisi nilai frekuensi dibagi dengan total pelemparan yang dipilih.";
@@ -61,7 +60,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                     child: Text(
                       "Percobaan 1",
                       style: TextStyle(
-                          fontSize: 23,
+                          fontSize: 20,
                           fontWeight: FontWeight.w600,
                           color: Colors.white),
                     ),
@@ -232,7 +231,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                   child: const Text(
                     'Continue Test 2',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -256,8 +255,8 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
               label,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 14,
-                color: Colors.black87,
+                fontSize: 11,
+                color: Color(0xFF6B7280),
               ),
             ),
           ),
@@ -266,8 +265,8 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
               frequency.toString(),
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 14,
-                color: Colors.black87,
+                fontSize: 11,
+                color: Color(0xFF6B7280),
               ),
             ),
           ),
@@ -276,8 +275,8 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
               '$frequency/$total',
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 14,
-                color: Colors.black87,
+                fontSize: 11,
+                color: Color(0xFF6B7280),
               ),
             ),
           ),
