@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:propapp/screen/answer_recap.dart';
 import 'package:propapp/screen/dice_experiment_1.dart';
+import 'package:propapp/screen/dice_experiment_2.dart';
+import 'package:propapp/screen/dice_experiment_3.dart';
 import 'package:propapp/screen/dice_table_1.dart';
+import 'package:propapp/screen/dice_table_2dart';
 import 'package:propapp/screen/interactive_page.dart';
 import 'utils/routes.dart';
 
@@ -27,9 +30,9 @@ class MiniEduApp extends StatelessWidget {
           headlineMedium: TextStyle(fontFamily: 'Poppins'),
           headlineSmall: TextStyle(fontFamily: 'Poppins'),
           titleLarge: TextStyle(fontFamily: 'Poppins'),
-        ),  
+        ),
       ),
-      home: DiceExperimentPage(),
+      home: DiceExperimentPage3(),
       routes: appRoutes,
     );
   }
