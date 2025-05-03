@@ -219,7 +219,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/test2');
+                    Navigator.pushNamed(context, '/dice2');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D2939),
@@ -230,7 +230,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                     ),
                   ),
                   child: const Text(
-                    'continue test 2',
+                    'Continue Test 2',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
