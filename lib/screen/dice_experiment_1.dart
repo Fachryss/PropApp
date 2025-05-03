@@ -14,6 +14,9 @@ class DiceExperimentPage1 extends StatefulWidget {
 
 class _DiceExperimentPageState extends State<DiceExperimentPage1> {
   String? selectedOption;
+
+  bool get hasSelection => selectedOption != null;
+
   final List<String> options = [
     '30 Kali',
     '100 Kali',
@@ -40,7 +43,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
       int roll = _random.nextInt(6) + 1;
       results[roll.toString()] = (results[roll.toString()] ?? 0) + 1;
 
-      if (roll % 2 == 0){
+      if (roll % 2 == 0) {
         results['ganjil'] = (results['ganjil'] ?? 0) + 1;
       } else {
         results['genap'] = (results['genap'] ?? 0) + 1;
@@ -52,7 +55,8 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
     return results;
   }
 
-  Future<void> _saveResultsStorage(int totalRools, Map<String, int> result) async {
+  Future<void> _saveResultsStorage(
+      int totalRools, Map<String, int> result) async {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setInt('total_rolls_a', totalRools);
@@ -68,10 +72,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
     await prefs.setInt('dice_a_genap', result['genap'] ?? 0);
 
     await prefs.setString('dice_result_a', jsonEncode(result));
-
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -79,71 +80,158 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          padding: const EdgeInsets.fromLTRB(25, 20, 25, 51),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header section
+              const SizedBox(height: 16),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1D2939),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Text(
                   'Percobaan 1',
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,  
-                  ),
+                      fontSize: 23,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
                 ),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 13),
 
               // Instruction text
               const Text(
                 'Anda bisa memilih beberapa kali percobaan yang ingin anda lakukan.',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  // color: Colors.black54,
+                  color: Color(0xFF6B7280),
                 ),
               ),
 
-              const SizedBox(height: 36),
+              const SizedBox(height: 30),
 
               // Option buttons
-              ...options.map((option) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _buildOptionButton(option),
-                  )),
+              ...options.map(
+                (option) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _buildOptionButton(option),
+                ),
+              ),
+              const SizedBox(height: 30),
+              if (selectedOption != null) ...[
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOut,
+                  transform: hasSelection
+                      ? (Matrix4.identity()..scale(1.01))
+                      : (Matrix4.identity()..scale(1.0)),
+                  width: double.infinity,
+                  height: 230,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFDBEAFE),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "FYI Dadu seimbang adalah dadu yang memiliki 6 sisi, dengan tulisan angka 1, 2, 3, 4, 5, dan 6.  Dalam setiap satu kali pelemparan dadu hanya akan muncul 1 dari 6 sisi yang ada.",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        width: 158,
+                        height: 68,
+                        alignment: Alignment.topLeft,
+                        padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/image/PakRendi.png',
+                              width: 45,
+                              height: 45,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Mr.Rendi",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF1F2937),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "Math Teacher",
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF6B7280),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
 
               const Spacer(),
 
               // Bottom button
-              SizedBox(
-                width: double.infinity,
+              AnimatedContainer(
                 height: 56,
+                width: double.infinity,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                transform: hasSelection
+                    ? (Matrix4.identity()..scale(1.01))
+                    : (Matrix4.identity()..scale(1.0)),
                 child: ElevatedButton(
-                  onPressed: selectedOption != null
+                  onPressed: hasSelection
                       ? () async {
                           final int numberOfRolls =
                               int.parse(selectedOption!.split(' ')[0]);
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
                               );
+                            },
+                          );
 
                           // Mock results for demonstration purposes
-                          final Map<String, int> mockResults = await _rollDice(numberOfRolls);
+                          final Map<String, int> mockResults =
+                              await _rollDice(numberOfRolls);
 
                           Navigator.push(
                             context,
@@ -167,27 +255,29 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedOption != null
-                        ? const Color(0xFF1D2939)
-                        : Colors.grey.shade200,
-                    foregroundColor: selectedOption != null
-                        ? Colors.white
-                        : Colors.grey.shade700,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
+                    backgroundColor:
+                        hasSelection ? Color(0xFF1D2939) : Color(0xFFF3F4F6),
+                    foregroundColor: Colors.white,
                     elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
                   ),
-                  child: Text(
-                    selectedOption != null
-                        ? 'Roll the dice'
-                        : 'Choose how many times',
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    // selectedOption != null
+                    //     ? 'Roll the dice'
+                    //     : 'Choose how many times',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: selectedOption != null
-                          ? Colors.white
-                          : Colors.grey.shade700,
+                      fontSize: hasSelection ? 20 : 19,
+                      fontWeight:
+                          hasSelection ? FontWeight.w600 : FontWeight.w500,
+                      color:
+                          hasSelection ? Colors.white : const Color(0xFF6B7280),
+                    ),
+                    child: Text(
+                      hasSelection ? 'Roll the dice!' : "Choose how many times",
                     ),
                   ),
                 ),
@@ -205,27 +295,30 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
     return InkWell(
       onTap: () {
         setState(() {
-          selectedOption = option;
+          selectedOption = isSelected ? null : option;
         });
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
         width: double.infinity,
-        height: 56,
+        height: 53,
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF1D2939) : Colors.white,
-          borderRadius: BorderRadius.circular(28),
+          color: isSelected ? Color(0xFF1F2937) : Colors.white,
+          borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: Colors.grey.shade300,
+            color: Colors.black.withOpacity(0.2),
             width: 1,
           ),
         ),
-        alignment: Alignment.center,
-        child: Text(
-          option,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.white : Colors.black87,
+        child: Center(
+          child: Text(
+            option,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              color: isSelected ? Colors.white : Color(0xFF1F2937),
+            ),
           ),
         ),
       ),
