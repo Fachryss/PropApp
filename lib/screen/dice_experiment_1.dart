@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:propapp/screen/dice_table_1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DiceExperimentPage extends StatefulWidget {
-  const DiceExperimentPage({super.key});
+class DiceExperimentPage1 extends StatefulWidget {
+  const DiceExperimentPage1({super.key});
 
   @override
-  State<DiceExperimentPage> createState() => _DiceExperimentPageState();
+  State<DiceExperimentPage1> createState() => _DiceExperimentPageState();
 }
 
-class _DiceExperimentPageState extends State<DiceExperimentPage> {
+class _DiceExperimentPageState extends State<DiceExperimentPage1> {
   String? selectedOption;
   final List<String> options = [
     '30 Kali',

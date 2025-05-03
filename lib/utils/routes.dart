@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:propapp/screen/dice_experiment.dart';
+import 'package:propapp/screen/dice_experiment_1.dart';
+import 'package:propapp/screen/dice_experiment_2.dart';
+import 'package:propapp/screen/dice_experiment_3.dart';
+import 'package:propapp/screen/dice_summary.dart';
 import 'package:propapp/screen/dice_table_1.dart';
 import 'package:propapp/screen/question_checkbox_2.dart';
 import '../screen/splash_screen.dart';
@@ -21,8 +24,11 @@ final Map<String, WidgetBuilder> appRoutes = {
   // '/checkbox': (_) => const QuestionCheckboxPage(),
   // '/checkbox2': (_) => const QuestionCheckboxPage2(),
   '/interactive': (_) => const ProbabilitySelectionPage(),
-  '/dice': (_) => const DiceExperimentPage(),
+  '/dice': (_) => const DiceExperimentPage1(),
+  '/dice2': (_) => const DiceExperimentPage2(),
+  '/dice3': (_) => const DiceExperimentPage3(),
   // '/diceTable1': (_) => const DiceResultsTablePage1(),
+  '/diceSummary': (_) => const ExperimentSummaryPage(),
   '/multiple': (_) => const MultipleChoicePage(),
   '/closing': (_) => const ClosingPage(),
 };
