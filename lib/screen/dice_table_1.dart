@@ -1,6 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-class DiceResultsTablePage1 extends StatelessWidget {
+class DiceResultsTablePage1 extends StatefulWidget {
   final int totalRolls;
   final Map<String, int> results;
 
@@ -11,46 +13,62 @@ class DiceResultsTablePage1 extends StatelessWidget {
   });
 
   @override
+  _DiceResultsTablePage1State createState() => _DiceResultsTablePage1State();
+}
+
+class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
+  String currentText =
+      "Peluang empiris adalah perbandingan banyaknya kejadian yang muncul dengan banyak percobaan yang dilakukan.";
+
+  @override
+  void initState() {
+    super.initState();
+    // Ganti teks setelah 5 detik (bisa diubah sesuai kebutuhan)
+    Timer(Duration(seconds: 30), () {
+      setState(() {
+        currentText =
+            "Kolom frekuensi berisi hasil random muncul mata dadu masing-masing, peluang empiris berisi nilai frekuensi dibagi dengan total pelemparan yang dipilih.";
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Calculate total for even and odd numbers
-    final int evenTotal =
-        (results['2'] ?? 0) + (results['4'] ?? 0) + (results['6'] ?? 0);
-    final int oddTotal =
-        (results['1'] ?? 0) + (results['3'] ?? 0) + (results['5'] ?? 0);
+    final int evenTotal = (widget.results['2'] ?? 0) +
+        (widget.results['4'] ?? 0) +
+        (widget.results['6'] ?? 0);
+    final int oddTotal = (widget.results['1'] ?? 0) +
+        (widget.results['3'] ?? 0) +
+        (widget.results['5'] ?? 0);
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(25, 20, 25, 51),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 16,
-              ),
-              // Header section
+              const SizedBox(height: 47),
               Container(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1D2939),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const IntrinsicWidth(
-                    child: Center(
-                      child: Text(
-                        "Percobaan 1",
-                        style: TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      ),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1D2939),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const IntrinsicWidth(
+                  child: Center(
+                    child: Text(
+                      "Percobaan 1",
+                      style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
                     ),
-                  )),
-
+                  ),
+                ),
+              ),
               const SizedBox(height: 13),
-
-              // Description text
               const Text(
                 'Berikut adalah tabel hasil percobaan lemparan dadu dengan jumlah lemparan yang dipilih.',
                 style: TextStyle(
@@ -59,22 +77,20 @@ class DiceResultsTablePage1 extends StatelessWidget {
                   color: Color(0xFF6B7280),
                 ),
               ),
-
               const SizedBox(height: 30),
-
-              // Table header with icons
               Row(
                 children: [
                   Expanded(
                     child: Column(
                       children: [
-                        Icon(Icons.casino, color: Colors.black54, size: 24),
-                        const SizedBox(height: 4),
+                        Icon(Icons.casino_outlined,
+                            color: Color(0xFF1F2937), size: 24),
+                        const SizedBox(height: 7),
                         const Text(
                           'Mata dadu',
                           style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.black54,
+                            fontSize: 11,
+                            color: Color(0xFF1F2937),
                           ),
                         ),
                       ],
@@ -83,14 +99,14 @@ class DiceResultsTablePage1 extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Icon(Icons.table_chart_outlined,
-                            color: Colors.black54, size: 24),
-                        const SizedBox(height: 4),
+                        Icon(Icons.library_books_outlined,
+                            color: Color(0xFF1F2937), size: 24),
+                        const SizedBox(height: 7),
                         const Text(
                           'Frekuensi',
                           style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.black54,
+                            fontSize: 11,
+                            color: Color(0xFF1F2937),
                           ),
                         ),
                       ],
@@ -99,13 +115,14 @@ class DiceResultsTablePage1 extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        Icon(Icons.auto_graph, color: Colors.black54, size: 24),
-                        const SizedBox(height: 4),
+                        Icon(Icons.auto_graph,
+                            color: Color(0xFF1F2937), size: 24),
+                        const SizedBox(height: 7),
                         const Text(
                           'Peluang empiris',
                           style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.black54,
+                            fontSize: 11,
+                            color: Color(0xFF1F2937),
                           ),
                         ),
                       ],
@@ -113,40 +130,93 @@ class DiceResultsTablePage1 extends StatelessWidget {
                   ),
                 ],
               ),
-
-              const SizedBox(height: 16),
-
-              // Table rows for each dice face
-              _buildTableRow(
-                  '1', results['1'] ?? 0, results['total_rolls'] ?? 0),
+              const SizedBox(height: 12),
+              _buildTableRow('1', widget.results['1'] ?? 0, widget.totalRolls),
               _buildDivider(),
-              _buildTableRow(
-                  '2', results['2'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow('2', widget.results['2'] ?? 0, widget.totalRolls),
               _buildDivider(),
-              _buildTableRow(
-                  '3', results['3'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow('3', widget.results['3'] ?? 0, widget.totalRolls),
               _buildDivider(),
-              _buildTableRow(
-                  '4', results['4'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow('4', widget.results['4'] ?? 0, widget.totalRolls),
               _buildDivider(),
-              _buildTableRow(
-                  '5', results['5'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow('5', widget.results['5'] ?? 0, widget.totalRolls),
               _buildDivider(),
-              _buildTableRow(
-                  '6', results['6'] ?? 0, results['total_rolls'] ?? 0),
+              _buildTableRow('6', widget.results['6'] ?? 0, widget.totalRolls),
               _buildDivider(),
-
-              // Summary rows (Even and Odd)
-              _buildTableRow('Genap', evenTotal, totalRolls),
+              _buildTableRow('Genap', evenTotal, widget.totalRolls),
               _buildDivider(),
-              _buildTableRow('Ganjil', oddTotal, totalRolls),
-
-              const Spacer(),
-
-              // Continue button
-              SizedBox(
+              _buildTableRow('Ganjil', oddTotal, widget.totalRolls),
+              const SizedBox(height: 30),
+              Container(
                 width: double.infinity,
+                constraints: BoxConstraints(
+                  minHeight: 0,
+                ),
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFDBEAFE),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      currentText,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Container(
+                      width: 158,
+                      height: 68,
+                      padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/image/PakRendi.png",
+                            width: 45,
+                            height: 45,
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                "Mr.Rendi",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF1F2937),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Math Teacher",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF6B7280),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 50),
+              Container(
                 height: 56,
+                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/test2');
@@ -154,16 +224,17 @@ class DiceResultsTablePage1 extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D2939),
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
                     elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
                   ),
                   child: const Text(
                     'continue test 2',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -219,31 +290,6 @@ class DiceResultsTablePage1 extends StatelessWidget {
     return Divider(
       color: Colors.grey.shade300,
       height: 1,
-    );
-  }
-}
-
-// Example of how to use this page
-class DiceExperimentResults extends StatelessWidget {
-  const DiceExperimentResults({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    // Example data - this would normally be passed from the previous page
-    final Map<String, int> mockResults = {
-      '1': 15,
-      '2': 17,
-      '3': 12,
-      '4': 14,
-      '5': 21,
-      '6': 21,
-    };
-
-    final int totalRolls = 100; // Example: 100 rolls
-
-    return DiceResultsTablePage1(
-      totalRolls: totalRolls,
-      results: mockResults,
     );
   }
 }
