@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import '../screen/question.dart';
+import '../screen/summary_page.dart';
 
 class MultipleChoicePage extends StatefulWidget {
   const MultipleChoicePage({super.key});
@@ -10,142 +12,124 @@ class MultipleChoicePage extends StatefulWidget {
 }
 
 class _MultipleChoicePageState extends State<MultipleChoicePage> {
-  String? SelecetedOption;
+  int currentQuestionIndex = 0;
+  int? selectedAnswer;
+  List<int?> userAnswers = List.filled(questions.length, null);
 
-  bool get hasSelection => SelecetedOption != null;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(25, 20, 25, 51),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              Container(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1F2937),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const IntrinsicWidth(
-                    child: Center(
-                      child: Text(
-                        "Soal 1",
-                        style: TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      ),
-                    ),
-                  )),
-              const SizedBox(
-                height: 13,
-              ),
-              const Text(
-                "Pertanyan yang diberikan oleh pak Rendi",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF6B7280),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              _buildOptionItem("Jawaban 1"),
-              const SizedBox(
-                height: 10,
-              ),
-              _buildOptionItem("Jawaban 2"),
-              const SizedBox(
-                height: 10,
-              ),
-              _buildOptionItem("Jawaban 3"),
-              const SizedBox(
-                height: 10,
-              ),
-              _buildOptionItem("Jawaban 4 "),
-              const Spacer(),
-              AnimatedContainer(
-                height: 56,
-                width: double.infinity,
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeInOut,
-                transform: hasSelection
-                    ? (Matrix4.identity()
-                      ..scale(1.01)) // Sedikit membesar saat aktif
-                    : (Matrix4.identity()..scale(1.0)), // Normal
-                child: ElevatedButton(
-                  onPressed: hasSelection
-                      ? () {
-                          Navigator.pushNamed(context, '/checkbox2');
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        hasSelection ? Color(0xFF1D2939) : Color(0xFFF3F4F6),
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  child: AnimatedDefaultTextStyle(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    style: TextStyle(
-                      fontSize: hasSelection ? 20 : 19,
-                      fontWeight:
-                          hasSelection ? FontWeight.w600 : FontWeight.w500,
-                      color:
-                          hasSelection ? Colors.white : const Color(0xFF6B7280),
-                    ),
-                    child: Text(
-                      hasSelection ? 'Go to next question' : "Choose an answer",
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  void onSelectAnswer(int index) {
+    setState(() {
+      selectedAnswer = index;
+      userAnswers[currentQuestionIndex] = index;
+    });
   }
 
-  Widget _buildOptionItem(String text) {
-    final isSelected = SelecetedOption == text;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          SelecetedOption = isSelected ? null : text;
-        });
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        width: double.infinity,
-        height: 53,
-        decoration: BoxDecoration(
-          color: isSelected ? Color(0xFF1F2937) : Colors.white,
-          borderRadius: BorderRadius.circular(25),
-          border: Border.all(
-            color: Colors.black.withOpacity(0.2),
-            width: 1,
-          ),
+  void onNext() {
+    if (currentQuestionIndex < questions.length - 1) {
+      setState(() {
+        currentQuestionIndex++;
+        selectedAnswer = userAnswers[currentQuestionIndex];
+      });
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SummaryPage(userAnswers: userAnswers),
         ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-              color: isSelected ? Colors.white : Color(0xFF1F2937),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final question = questions[currentQuestionIndex];
+
+    return Scaffold(
+      backgroundColor: Colors.white, // Ganti background jadi putih
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(
+            25, 48, 25, 16), // Tambahkan top padding untuk pengganti AppBar
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 24,
             ),
-          ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Text(
+                'Soal ${currentQuestionIndex + 1}',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                    fontFamily: 'Poppins'),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              question.questionText,
+              style: const TextStyle(
+                fontSize: 16,
+                fontFamily: 'Poppins',
+              ),
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(height: 20),
+            for (int i = 0; i < question.options.length; i++)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () => onSelectAnswer(i),
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor:
+                          selectedAnswer == i ? Colors.black87 : Colors.white,
+                      foregroundColor:
+                          selectedAnswer == i ? Colors.white : Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      side: const BorderSide(color: Colors.black12),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: Text(question.options[i]),
+                  ),
+                ),
+              ),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: selectedAnswer != null ? onNext : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: selectedAnswer != null
+                    ? Colors.black87
+                    : Colors.grey.shade300,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                minimumSize: const Size.fromHeight(50),
+              ),
+              child: Text(
+                currentQuestionIndex == questions.length - 1
+                    ? 'Selesai'
+                    : (selectedAnswer != null
+                        ? 'Next question'
+                        : 'Choose answer'),
+                style: TextStyle(
+                  color: selectedAnswer != null ? Colors.white : Colors.black38,
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+
         ),
       ),
     );

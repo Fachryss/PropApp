@@ -37,6 +37,7 @@ class MiniEduApp extends StatelessWidget {
         totalRolls: 100,
         results: {},
       ),
+
       routes: appRoutes,
     );
   }

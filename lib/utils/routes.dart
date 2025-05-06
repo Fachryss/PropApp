@@ -13,10 +13,12 @@ import '../screen/critical/critical_3.dart';
 import '../screen/question_checkbox.dart';
 import '../screen/interactive_page.dart';
 import '../screen/multiple_choice_page.dart';
+
 import '../screen/closing_page.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   // '/': (_) => const SplashScreen(),
+
   // '/intro': (_) => const IntroPage(),
   // '/critical1': (_) => const Critical1Page(),
   // '/critical2': (_) => const Critical2Page(),
