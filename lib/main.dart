@@ -10,7 +10,7 @@ void main() {
 }
 
 class MiniEduApp extends StatelessWidget {
-  const MiniEduApp({super.key});
+  const MiniEduApp({super.key});  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +29,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),  
       ),
-      home: DiceExperimentPage(),
+      home: DiceExperimentPage1(),
       routes: appRoutes,
     );
   }

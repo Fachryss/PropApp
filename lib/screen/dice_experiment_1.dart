@@ -130,7 +130,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
                       ? (Matrix4.identity()..scale(1.01))
                       : (Matrix4.identity()..scale(1.0)),
                   width: double.infinity,
-                  height: 230,
+                    constraints: const BoxConstraints(minHeight: 0),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: const Color(0xFFDBEAFE),
@@ -146,58 +146,58 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        width: 158,
-                        height: 68,
-                        alignment: Alignment.topLeft,
-                        padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/image/PakRendi.png',
-                              width: 45,
-                              height: 45,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Mr.Rendi",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF1F2937),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "Math Teacher",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF6B7280),
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
+                      // SizedBox(
+                      //   height: 15,
+                      // ),
+                      // Container(
+                      //   width: 158,
+                      //   height: 68,
+                      //   alignment: Alignment.topLeft,
+                      //   padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.white,
+                      //     borderRadius: BorderRadius.circular(12),
+                      //   ),
+                      //   child: Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Image.asset(
+                      //         'assets/image/PakRendi.png',
+                      //         width: 45,
+                      //         height: 45,
+                      //       ),
+                      //       SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       Column(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           Text(
+                      //             "Mr.Rendi",
+                      //             style: TextStyle(
+                      //               fontSize: 16,
+                      //               fontWeight: FontWeight.w600,
+                      //               color: Color(0xFF1F2937),
+                      //             ),
+                      //           ),
+                      //           SizedBox(
+                      //             height: 5,
+                      //           ),
+                      //           Text(
+                      //             "Math Teacher",
+                      //             style: TextStyle(
+                      //               fontSize: 11,
+                      //               fontWeight: FontWeight.w500,
+                      //               color: Color(0xFF6B7280),
+                      //             ),
+                      //           )
+                      //         ],
+                      //       )
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
                 ),

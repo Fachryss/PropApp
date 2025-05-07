@@ -56,7 +56,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage2> {
   Future<void> _saveResultsStorage(int totalRools, Map<String, int> result) async {
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.setInt('total_rolls_a', totalRools);
+    await prefs.setInt('total_rolls_b', totalRools);
 
     await prefs.setInt('dice_b_1', result['1'] ?? 0);
     await prefs.setInt('dice_b_2', result['2'] ?? 0);

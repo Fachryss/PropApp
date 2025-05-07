@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ExperimentSummaryPage extends StatefulWidget {
   const ExperimentSummaryPage({super.key});
@@ -8,20 +10,28 @@ class ExperimentSummaryPage extends StatefulWidget {
 }
 
 class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
+  late SharedPreferences prefs;
+  late Map<String, List<String>> _experimentData;
+  bool _isLoading = true;
+
   // State to track which stage we're in
   int _currentStage = 1; // 1: initial, 2: explanation, 3: question
 
-  // Example data for the experiment results
-  final Map<String, List<String>> _experimentData = {
-    '1': ['15', '15/100', '15/100', '15/100'],
-    '2': ['17', '17/100', '17/100', '17/100'],
-    '3': ['12', '12/100', '12/100', '12/100'],
-    '4': ['14', '14/100', '14/100', '14/100'],
-    '5': ['21', '21/100', '21/100', '21/100'],
-    '6': ['21', '21/100', '21/100', '21/100'],
-    'Genap': ['52', '52/100', '52/100', '52/100'],
-    'Ganjil': ['48', '48/100', '48/100', '48/100'],
-  };
+  @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    prefs = await SharedPreferences.getInstance();
+    final fetchedData = await DiceDataManager.fetchExperimentData();
+    
+    setState(() {
+      _experimentData = fetchedData;
+      _isLoading = false;
+    });
+  }
 
   void _showExplanation() {
     setState(() {
@@ -40,85 +50,87 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              const Text(
-                'Rekap seluruh percobaan',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Berikut adalah tabel rekap hasil dari seluruh percobaan yang sudah dilakukan.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black54,
-                ),
-              ),
-              const SizedBox(height: 24),
-              
-              // Table header - Peluang empiris
-              const Center(
-                child: Text(
-                  'Peluang empiris',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              
-              // Column headers
-              _buildTableHeader(),
-              
-              // Table content
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: _experimentData.entries.map((entry) {
-                      return _buildTableRow(entry.key, entry.value);
-                    }).toList(),
-                  ),
-                ),
-              ),
-              
-              // Show different bottom sections based on stage
-              if (_currentStage == 1)
-                _buildBottomButton(
-                  'Show explanation',
-                  _showExplanation,
-                ),
-              if (_currentStage == 2)
-                Column(
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildExplanationBox(),
                     const SizedBox(height: 16),
-                    _buildBottomButton(
-                      'Go to question',
-                      _goToQuestion,
+                    const Text(
+                      'Rekap seluruh percobaan',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
-                  ],
-                ),
-              if (_currentStage == 3)
-                Column(
-                  children: [
-                    _buildQuestionBox(),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Berikut adalah tabel rekap hasil dari seluruh percobaan yang sudah dilakukan.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    
+                    // Table header - Peluang empiris
+                    const Center(
+                      child: Text(
+                        'Peluang empiris',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 16),
-                    _buildYesNoButtons(),
+                    
+                    // Column headers
+                    _buildTableHeader(),
+                    
+                    // Table content
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: _experimentData.entries.map((entry) {
+                            return _buildTableRow(entry.key, entry.value);
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    
+                    // Show different bottom sections based on stage
+                    if (_currentStage == 1)
+                      _buildBottomButton(
+                        'Show explanation',
+                        _showExplanation,
+                      ),
+                    if (_currentStage == 2)
+                      Column(
+                        children: [
+                          _buildExplanationBox(),
+                          const SizedBox(height: 16),
+                          _buildBottomButton(
+                            'Go to question',
+                            _goToQuestion,
+                          ),
+                        ],
+                      ),
+                    if (_currentStage == 3)
+                      Column(
+                        children: [
+                          _buildQuestionBox(),
+                          const SizedBox(height: 16),
+                          _buildYesNoButtons(),
+                        ],
+                      ),
                   ],
                 ),
-            ],
-          ),
-        ),
+              ),
       ),
     );
   }
@@ -443,5 +455,97 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
         ),
       ],
     );
+  }
+}
+
+// Class to handle fetching data from SharedPreferences
+class DiceDataManager {
+  // Fetch data from SharedPreferences and organize it into the desired format
+  static Future<Map<String, List<String>>> fetchExperimentData() async {
+    final prefs = await SharedPreferences.getInstance();
+    
+    // Define expected pages
+    final pages = ['a', 'b', 'c'];
+    
+    // Helper function to safely get values
+    String getValueOrDefault(String key, {String defaultValue = '0'}) {
+      return prefs.containsKey(key) ? '${prefs.getInt(key) ?? 0}' : defaultValue;
+    }
+    
+    // Helper function to safely get ratio values
+    String getRatioValue(String key, String totalKey, {String defaultValue = '0/0'}) {
+      final value = prefs.getInt(key) ?? 0;
+      final total = prefs.getInt(totalKey) ?? 0;
+      return total > 0 ? '$value/$total' : defaultValue;
+    }
+    
+    // Initialize result map
+    final Map<String, List<String>> experimentData = {
+      '1': ['0', '0', '0', '0'],
+      '2': ['0', '0', '0', '0'],
+      '3': ['0', '0', '0', '0'],
+      '4': ['0', '0', '0', '0'],
+      '5': ['0', '0', '0', '0'],
+      '6': ['0', '0', '0', '0'],
+      'Genap': ['0', '0/0', '0/0', '0/0'],
+      'Ganjil': ['0', '0/0', '0/0', '0/0'],
+    };
+    
+    // Populate data from available pages
+    for (int i = 0; i < pages.length; i++) {
+      final page = pages[i];
+      final columnIndex = i + 1; // 1-based index for columns (1, 2, 3)
+      
+      // Get dice results for numbers 1-6
+      for (int diceValue = 1; diceValue <= 6; diceValue++) {
+        final diceKey = 'dice_${page}_$diceValue';
+        final value = getValueOrDefault(diceKey);
+        
+        // Update the corresponding value in the experimentData map
+        if (experimentData['$diceValue'] != null && columnIndex < experimentData['$diceValue']!.length) {
+          experimentData['$diceValue']![columnIndex] = value;
+        }
+        
+        // Update the dice result column based on the corresponding page's data
+        if (experimentData['$diceValue'] != null) {
+          final resultKey = 'dice_result_$page';
+          final resultValue = prefs.getString(resultKey) ?? '{}';
+          final resultMap = jsonDecode(resultValue) as Map<String, dynamic>;
+          
+          // For the respective dice value, update the corresponding column
+          // For page 'a', update column 1; for page 'b', update column 2; etc.
+          if (columnIndex < experimentData['$diceValue']!.length) {
+            experimentData['$diceValue']![columnIndex] = resultMap['$diceValue']?.toString() ?? '0';
+          }
+          
+          // For the first column (index 0), we'll use the data from page 'a'
+          if (page == 'a') {
+            experimentData['$diceValue']![0] = resultMap['$diceValue']?.toString() ?? '0';
+          }
+        }
+      }
+      
+      // Get odd/even results
+      final totalKey = 'total_rolls_$page';
+      final ganjilKey = 'dice_${page}_ganjil';
+      final genapKey = 'dice_${page}_genap';
+      
+      // Update odd/even ratios
+      if (experimentData['Ganjil'] != null && columnIndex < experimentData['Ganjil']!.length) {
+        experimentData['Ganjil']![columnIndex] = getRatioValue(ganjilKey, totalKey);
+      }
+      
+      if (experimentData['Genap'] != null && columnIndex < experimentData['Genap']!.length) {
+        experimentData['Genap']![columnIndex] = getRatioValue(genapKey, totalKey);
+      }
+      
+      // For first page (page 'a'), also update the first column with total counts
+      if (page == 'a') {
+        experimentData['Ganjil']![0] = getValueOrDefault(ganjilKey);
+        experimentData['Genap']![0] = getValueOrDefault(genapKey);
+      }
+    }
+    
+    return experimentData;
   }
 }
