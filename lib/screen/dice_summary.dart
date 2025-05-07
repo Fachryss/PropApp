@@ -14,8 +14,11 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
   late Map<String, List<String>> _experimentData;
   bool _isLoading = true;
 
-  // State to track which stage we're in
-  int _currentStage = 1; // 1: initial, 2: explanation, 3: question
+  // State variables for questions
+  int _currentQuestionIndex = 0; // 0: no question, 1: first question, 2: second question
+  String? _selectedAnswer;
+  bool _showFeedback = false;
+  bool _isAnswerCorrect = false;
 
   @override
   void initState() {
@@ -30,21 +33,44 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
     setState(() {
       _experimentData = fetchedData;
       _isLoading = false;
+      _currentQuestionIndex = 1; // Start with the first question
     });
   }
 
-  void _showExplanation() {
+  void _selectAnswer(String answer) {
     setState(() {
-      _currentStage = 2;
+      _selectedAnswer = answer;
+      _showFeedback = true;
+      
+      if (_currentQuestionIndex == 1) {
+        // First question - correct answer is "Ya" (1/6)
+        _isAnswerCorrect = answer == "1/6";
+      } else if (_currentQuestionIndex == 2) {
+        // Second question - correct answer is 3/6
+        _isAnswerCorrect = answer == "3/6";
+      }
     });
   }
 
-  void _goToQuestion() {
+  void _goToNextQuestion() {
     setState(() {
-      _currentStage = 3;
+      _currentQuestionIndex = 2;
+      _selectedAnswer = null;
+      _showFeedback = false;
     });
   }
 
+  void _finishExperiment() {
+    // Navigate back to home or show completion screen
+    // This could be implemented based on your navigation structure
+    // For now, we'll just reset to the first question
+    setState(() {
+      _currentQuestionIndex = 1;
+      _selectedAnswer = null;
+      _showFeedback = false;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,81 +80,57 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
             ? const Center(child: CircularProgressIndicator())
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Rekap seluruh percobaan',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Berikut adalah tabel rekap hasil dari seluruh percobaan yang sudah dilakukan.',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    
-                    // Table header - Peluang empiris
-                    const Center(
-                      child: Text(
-                        'Peluang empiris',
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Rekap seluruh percobaan',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: Colors.black,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    
-                    // Column headers
-                    _buildTableHeader(),
-                    
-                    // Table content
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: _experimentData.entries.map((entry) {
-                            return _buildTableRow(entry.key, entry.value);
-                          }).toList(),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Berikut adalah tabel rekap hasil dari seluruh percobaan yang sudah dilakukan.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black54,
                         ),
                       ),
-                    ),
-                    
-                    // Show different bottom sections based on stage
-                    if (_currentStage == 1)
-                      _buildBottomButton(
-                        'Show explanation',
-                        _showExplanation,
-                      ),
-                    if (_currentStage == 2)
-                      Column(
-                        children: [
-                          _buildExplanationBox(),
-                          const SizedBox(height: 16),
-                          _buildBottomButton(
-                            'Go to question',
-                            _goToQuestion,
+                      const SizedBox(height: 24),
+                      const Center(
+                        child: Text(
+                          'Peluang empiris',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
                           ),
-                        ],
+                        ),
                       ),
-                    if (_currentStage == 3)
+                      const SizedBox(height: 16),
+
+                      // Tabel header
+                      _buildTableHeader(),
+                      const SizedBox(height: 8),
+
+                      // Tabel isi
                       Column(
-                        children: [
-                          _buildQuestionBox(),
-                          const SizedBox(height: 16),
-                          _buildYesNoButtons(),
-                        ],
+                        children: _experimentData.entries.map((entry) {
+                          return _buildTableRow(entry.key, entry.value);
+                        }).toList(),
                       ),
-                  ],
+
+                      const SizedBox(height: 24),
+
+                      // Pertanyaan dan pilihan
+                      _buildQuestionSection(),
+                    ],
+                  ),
                 ),
               ),
       ),
@@ -223,237 +225,473 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
     );
   }
 
-  Widget _buildBottomButton(String label, VoidCallback onPressed) {
-    return SizedBox(
-      width: double.infinity,
-      height: 56,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF1D2939),
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
+  Widget _buildQuestionSection() {
+    if (_currentQuestionIndex == 1) {
+      return _buildFirstQuestion();
+    } else if (_currentQuestionIndex == 2) {
+      return _buildSecondQuestion();
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  Widget _buildFirstQuestion() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 16),
+        
+        // Question box
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.blue.shade50,
+            borderRadius: BorderRadius.circular(12),
           ),
-          elevation: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Apakah peluang empiris mata dadu 1 cenderung mengarah pada nilai 1/6?',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 2,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        'https://api.placeholder.com/40/40', 
+                        width: 40, 
+                        height: 40,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(Icons.person, size: 24);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Mr.Rendi',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        'Math Teacher',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        
+        const SizedBox(height: 16),
+        
+        // Feedback box (if answer is selected)
+        if (_showFeedback)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: _isAnswerCorrect ? Colors.green.shade50 : Colors.red.shade50,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: _isAnswerCorrect ? Colors.green.shade200 : Colors.red.shade200,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: _isAnswerCorrect ? Colors.green.shade100 : Colors.red.shade100,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        _isAnswerCorrect ? Icons.check : Icons.close,
+                        color: _isAnswerCorrect ? Colors.green.shade700 : Colors.red.shade700,
+                        size: 16,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      _isAnswerCorrect ? 'Tepat Sekali!' : 'Belum Tepat',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  _isAnswerCorrect
+                      ? 'Peluang munculnya angka 1 adalah 1/6.'
+                      : 'Coba perhatikan kembali tabel, terlihat bahwa peluang empiris benar mendekati nilai 1/6!',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isAnswerCorrect ? _goToNextQuestion : () {
+                      setState(() {
+                        _showFeedback = false;
+                        _selectedAnswer = null;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1D2939),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      _isAnswerCorrect ? 'Lanjut' : 'Coba Lagi',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          // Answer options
+          Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildAnswerButton("1/6"),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildAnswerButton("2/6"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildAnswerButton("3/6"),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildAnswerButton("4/6"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildAnswerButton("5/6"),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildAnswerButton("6/6"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Text(
+                  'choose an answer',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  Widget _buildSecondQuestion() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 16),
+        
+        // Question box
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.blue.shade50,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Bagaimana dengan peluang mata dadu genap (mata dadu 2, 4, dan 6)? Apakah mengarah pada nilai tertentu? Berapa',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 2,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        'https://api.placeholder.com/40/40', 
+                        width: 40, 
+                        height: 40,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(Icons.person, size: 24);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Mr.Rendi',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        'Math Teacher',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        
+        const SizedBox(height: 16),
+        
+        // Feedback box (if answer is selected)
+        if (_showFeedback)
+          // THIS IS THE FIXED PART - Removed the Expanded widget
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: _isAnswerCorrect ? Colors.green.shade50 : Colors.red.shade50,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: _isAnswerCorrect ? Colors.green.shade200 : Colors.red.shade200,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: _isAnswerCorrect ? Colors.green.shade100 : Colors.red.shade100,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        _isAnswerCorrect ? Icons.check : Icons.close,
+                        color: _isAnswerCorrect ? Colors.green.shade700 : Colors.red.shade700,
+                        size: 16,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      _isAnswerCorrect ? 'Tepat Sekali!' : 'Belum Tepat',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  _isAnswerCorrect
+                      ? 'Peluang munculnya mata dadu genap adalah 3/6.'
+                      : 'Coba perhatikan kembali tabel, khususnya pada peluang empiris mata dadu genap yang mengarah pada nilai tertentu yaitu 3/6.',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isAnswerCorrect ? _finishExperiment : () {
+                      setState(() {
+                        _showFeedback = false;
+                        _selectedAnswer = null;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1D2939),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: Text(
+                      _isAnswerCorrect ? 'Selesai' : 'Coba Lagi',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          // Answer options
+          Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildAnswerButton("1/6"),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildAnswerButton("2/6"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildAnswerButton("3/6"),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildAnswerButton("4/6"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildAnswerButton("5/6"),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildAnswerButton("6/6"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Text(
+                  'choose an answer',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  Widget _buildAnswerButton(String text) {
+    return SizedBox(
+      height: 48,
+      child: OutlinedButton(
+        onPressed: () => _selectAnswer(text),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Colors.black87,
+          backgroundColor: Colors.white,
+          side: BorderSide(color: Colors.grey.shade300),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
         ),
         child: Text(
-          label,
+          text,
           style: const TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildExplanationBox() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Perhatikan tabel di atas, semakin banyak pelemparan dadu dilakukan peluang empiris mata dadu cenderung mengarah pada suatu nilai.',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 2,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    'https://api.placeholder.com/40/40', 
-                    width: 40, 
-                    height: 40,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.person, size: 24);
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Mr.Rendi',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  Text(
-                    'Math Teacher',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuestionBox() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Apakah peluang empiris mata dadu 1 cenderung mengarah pada nilai 1/6?',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 2,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    'https://api.placeholder.com/40/40', 
-                    width: 40, 
-                    height: 40,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.person, size: 24);
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Mr.Rendi',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  Text(
-                    'Math Teacher',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildYesNoButtons() {
-    return Row(
-      children: [
-        Expanded(
-          child: SizedBox(
-            height: 56,
-            child: ElevatedButton(
-              onPressed: () {
-                // Handle "Ya" button press
-                Navigator.pushNamed(context, '/correct_answer');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1D2939),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                elevation: 0,
-              ),
-              child: const Text(
-                'Ya',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: SizedBox(
-            height: 56,
-            child: OutlinedButton(
-              onPressed: () {
-                // Handle "Tidak" button press
-                Navigator.pushNamed(context, '/incorrect_answer');
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.black87,
-                side: const BorderSide(color: Colors.grey),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
-              ),
-              child: const Text(
-                'Tidak',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
