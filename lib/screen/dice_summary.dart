@@ -20,6 +20,40 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
   bool _showFeedback = false;
   bool _isAnswerCorrect = false;
 
+  // Define questions data structure
+  final List<QuestionData> _questions = [
+    QuestionData(
+      questionText: '1. Apakah peluang empiris mata dadu 1 cenderung mengarah pada nilai 1/6?',
+      correctAnswer: '1/6',
+      successFeedback: 'Tepat Sekali, peluang munculnya angka 1 adalah 1/6.',
+      failureFeedback: 'Coba perhatikan kembali tabel, terlihat bahwa peluang empiris benar mendekati nilai 1/6!',
+    ),
+    QuestionData(
+      questionText: '2. Bagaimana dengan peluang mata dadu genap (mata dadu 2, 4, dan 6)? Apakah mengarah pada nilai tertentu? Berapa',
+      correctAnswer: '3/6',
+      successFeedback: 'Tepat Sekali, peluang munculnya mata dadu genap adalah 3/6.',
+      failureFeedback: 'Coba perhatikan kembali tabel, khusunya pada peluang empiris mata dadu genap yang mengarah pada nilai tertentu yaitu 3/6.',
+    ),
+    QuestionData(
+      questionText: '3. Bagaimana dengan mata dadu 2, mengarah pada angka berapa peluang empirisnya?',
+      correctAnswer: '1/6',
+      successFeedback: 'Tepat Sekali, peluang munculnya mata dadu 2 adalah 1/6.',
+      failureFeedback: 'Coba perhatikan kembali tabel, khusunya pada peluang empiris mata dadu 2 yang mengarah pada nilai tertentu yaitu 1/6.',
+    ),
+    QuestionData(
+      questionText: '4. Bagaimana dengan peluang munculnya mata dadu yang lain seperti munculnya mata dadu 3, mata dadu 4, mata dadu 5, dan mata dadu 6? Apakah juga mengarah pada nilai 1/6?',
+      correctAnswer: 'Ya',
+      successFeedback: 'Tepat Sekali, peluang munculnya suatu kejadian (muncul 1 sisi mata dadu) adalah 1/6.',
+      failureFeedback: 'Coba perhatikan kembali tabel, terlihat bahwa peluang empiris benar mendekati nilai 1/6!',
+    ),
+    QuestionData(
+      questionText: '5. Bagaimana dengan peluang mata dadu ganjil (mata dadu 1, 3, dan 5)? Apakah juga mengarah pada nilai tertentu? Berapa',
+      correctAnswer: '3/6',
+      successFeedback: 'Tepat Sekali, peluang munculnya mata dadu ganjil adalah 3/6.',
+      failureFeedback: 'Coba perhatikan kembali tabel, khusunya pada peluang empiris mata dadu ganjil yang mengarah pada nilai tertentu yaitu 3/6.',
+    ),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -42,32 +76,55 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
       _selectedAnswer = answer;
       _showFeedback = true;
       
-      if (_currentQuestionIndex == 1) {
-        // First question - correct answer is "Ya" (1/6)
-        _isAnswerCorrect = answer == "1/6";
-      } else if (_currentQuestionIndex == 2) {
-        // Second question - correct answer is 3/6
-        _isAnswerCorrect = answer == "3/6";
+      // Get current question (subtract 1 from index since questions array is 0-based)
+      final currentQuestion = _questions[_currentQuestionIndex - 1];
+      
+      // For question 4, handle "Ya" answer specially
+      if (_currentQuestionIndex == 4) {
+        _isAnswerCorrect = answer == "Ya";
+      } else {
+        _isAnswerCorrect = answer == currentQuestion.correctAnswer;
       }
     });
   }
 
   void _goToNextQuestion() {
     setState(() {
-      _currentQuestionIndex = 2;
+      _currentQuestionIndex++;
       _selectedAnswer = null;
       _showFeedback = false;
     });
   }
 
   void _finishExperiment() {
-    // Navigate back to home or show completion screen
-    // This could be implemented based on your navigation structure
-    // For now, we'll just reset to the first question
+    // Navigate to conclusion page
+    // For now, we'll just show a dialog as a placeholder
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Selesai!"),
+        content: Text("Anda telah menyelesaikan semua pertanyaan. Seharusnya navigasi ke halaman kesimpulan."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              setState(() {
+                _currentQuestionIndex = 1;
+                _selectedAnswer = null;
+                _showFeedback = false;
+              });
+            },
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _retryQuestion() {
     setState(() {
-      _currentQuestionIndex = 1;
-      _selectedAnswer = null;
       _showFeedback = false;
+      _selectedAnswer = null;
     });
   }
   
@@ -127,8 +184,18 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
 
                       const SizedBox(height: 24),
 
-                      // Pertanyaan dan pilihan
-                      _buildQuestionSection(),
+                      // Questions section
+                      if (_currentQuestionIndex > 0 && _currentQuestionIndex <= _questions.length)
+                        QuestionWidget(
+                          questionData: _questions[_currentQuestionIndex - 1],
+                          selectedAnswer: _selectedAnswer,
+                          showFeedback: _showFeedback,
+                          isAnswerCorrect: _isAnswerCorrect,
+                          onSelectAnswer: _selectAnswer,
+                          onRetry: _retryQuestion,
+                          onNext: _currentQuestionIndex < _questions.length ? _goToNextQuestion : _finishExperiment,
+                          nextButtonText: _currentQuestionIndex < _questions.length ? 'Lanjut' : 'Selesai',
+                        ),
                     ],
                   ),
                 ),
@@ -224,449 +291,350 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
       ],
     );
   }
+}
 
-  Widget _buildQuestionSection() {
-    if (_currentQuestionIndex == 1) {
-      return _buildFirstQuestion();
-    } else if (_currentQuestionIndex == 2) {
-      return _buildSecondQuestion();
-    } else {
-      return const SizedBox.shrink();
-    }
-  }
+// Data model for questions
+class QuestionData {
+  final String questionText;
+  final String correctAnswer;
+  final String successFeedback;
+  final String failureFeedback;
 
-  Widget _buildFirstQuestion() {
+  QuestionData({
+    required this.questionText,
+    required this.correctAnswer,
+    required this.successFeedback,
+    required this.failureFeedback,
+  });
+}
+
+// Reusable question widget
+class QuestionWidget extends StatelessWidget {
+  final QuestionData questionData;
+  final String? selectedAnswer;
+  final bool showFeedback;
+  final bool isAnswerCorrect;
+  final Function(String) onSelectAnswer;
+  final VoidCallback onRetry;
+  final VoidCallback onNext;
+  final String nextButtonText;
+
+  const QuestionWidget({
+    super.key,
+    required this.questionData,
+    required this.selectedAnswer,
+    required this.showFeedback,
+    required this.isAnswerCorrect,
+    required this.onSelectAnswer,
+    required this.onRetry,
+    required this.onNext,
+    required this.nextButtonText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
         
         // Question box
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.blue.shade50,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Apakah peluang empiris mata dadu 1 cenderung mengarah pada nilai 1/6?',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black87,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 2,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        'https://api.placeholder.com/40/40', 
-                        width: 40, 
-                        height: 40,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.person, size: 24);
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Mr.Rendi',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      Text(
-                        'Math Teacher',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        QuestionBox(text: questionData.questionText),
         
         const SizedBox(height: 16),
         
-        // Feedback box (if answer is selected)
-        if (_showFeedback)
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: _isAnswerCorrect ? Colors.green.shade50 : Colors.red.shade50,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: _isAnswerCorrect ? Colors.green.shade200 : Colors.red.shade200,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: _isAnswerCorrect ? Colors.green.shade100 : Colors.red.shade100,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        _isAnswerCorrect ? Icons.check : Icons.close,
-                        color: _isAnswerCorrect ? Colors.green.shade700 : Colors.red.shade700,
-                        size: 16,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      _isAnswerCorrect ? 'Tepat Sekali!' : 'Belum Tepat',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  _isAnswerCorrect
-                      ? 'Peluang munculnya angka 1 adalah 1/6.'
-                      : 'Coba perhatikan kembali tabel, terlihat bahwa peluang empiris benar mendekati nilai 1/6!',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _isAnswerCorrect ? _goToNextQuestion : () {
-                      setState(() {
-                        _showFeedback = false;
-                        _selectedAnswer = null;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1D2939),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      _isAnswerCorrect ? 'Lanjut' : 'Coba Lagi',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+        // Feedback or Answer options
+        if (showFeedback)
+          FeedbackBox(
+            isAnswerCorrect: isAnswerCorrect,
+            feedbackText: isAnswerCorrect 
+                ? questionData.successFeedback 
+                : questionData.failureFeedback,
+            buttonText: isAnswerCorrect ? nextButtonText : 'Coba Lagi',
+            onButtonPressed: isAnswerCorrect ? onNext : onRetry,
           )
         else
-          // Answer options
-          Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildAnswerButton("1/6"),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildAnswerButton("2/6"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildAnswerButton("3/6"),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildAnswerButton("4/6"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildAnswerButton("5/6"),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildAnswerButton("6/6"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: Text(
-                  'choose an answer',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          AnswerOptions(onSelectAnswer: onSelectAnswer),
       ],
     );
   }
+}
 
-  Widget _buildSecondQuestion() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16),
-        
-        // Question box
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.blue.shade50,
-            borderRadius: BorderRadius.circular(12),
+// Question box component
+class QuestionBox extends StatelessWidget {
+  final String text;
+
+  const QuestionBox({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            text,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          const SizedBox(height: 16),
+          TeacherInfoRow(),
+        ],
+      ),
+    );
+  }
+}
+
+// Teacher info component
+class TeacherInfoRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 2,
+                offset: const Offset(0, 1),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.network(
+              'https://api.placeholder.com/40/40', 
+              width: 40, 
+              height: 40,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.person, size: 24);
+              },
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Mr.Rendi',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            Text(
+              'Math Teacher',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.black54,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+// Feedback box component
+class FeedbackBox extends StatelessWidget {
+  final bool isAnswerCorrect;
+  final String feedbackText;
+  final String buttonText;
+  final VoidCallback onButtonPressed;
+
+  const FeedbackBox({
+    super.key,
+    required this.isAnswerCorrect,
+    required this.feedbackText,
+    required this.buttonText,
+    required this.onButtonPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isAnswerCorrect ? Colors.green.shade50 : Colors.red.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isAnswerCorrect ? Colors.green.shade200 : Colors.red.shade200,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              const Text(
-                'Bagaimana dengan peluang mata dadu genap (mata dadu 2, 4, dan 6)? Apakah mengarah pada nilai tertentu? Berapa',
-                style: TextStyle(
-                  fontSize: 14,
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isAnswerCorrect ? Colors.green.shade100 : Colors.red.shade100,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  isAnswerCorrect ? Icons.check : Icons.close,
+                  color: isAnswerCorrect ? Colors.green.shade700 : Colors.red.shade700,
+                  size: 16,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                isAnswerCorrect ? 'Tepat Sekali!' : 'Belum Tepat',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
               ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 2,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        'https://api.placeholder.com/40/40', 
-                        width: 40, 
-                        height: 40,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.person, size: 24);
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Mr.Rendi',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      Text(
-                        'Math Teacher',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            feedbackText,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: onButtonPressed,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1D2939),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+              child: Text(
+                buttonText,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Answer options component
+class AnswerOptions extends StatelessWidget {
+  final Function(String) onSelectAnswer;
+
+  const AnswerOptions({
+    super.key,
+    required this.onSelectAnswer,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Get the current question index from the closest StatefulWidget
+    final _ExperimentSummaryPageState state = 
+        context.findAncestorStateOfType<_ExperimentSummaryPageState>()!;
+    
+    // For question 4, we show Yes/No options
+    if (state._currentQuestionIndex == 4) {
+      return Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: _buildAnswerButton("Ya"),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildAnswerButton("Tidak"),
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          Center(
+            child: Text(
+              'choose an answer',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    
+    // For other questions, show fraction options
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: _buildAnswerButton("1/6"),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildAnswerButton("2/6"),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildAnswerButton("3/6"),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildAnswerButton("4/6"),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildAnswerButton("5/6"),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildAnswerButton("6/6"),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Center(
+          child: Text(
+            'choose an answer',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey.shade600,
+            ),
           ),
         ),
-        
-        const SizedBox(height: 16),
-        
-        // Feedback box (if answer is selected)
-        if (_showFeedback)
-          // THIS IS THE FIXED PART - Removed the Expanded widget
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: _isAnswerCorrect ? Colors.green.shade50 : Colors.red.shade50,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: _isAnswerCorrect ? Colors.green.shade200 : Colors.red.shade200,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: _isAnswerCorrect ? Colors.green.shade100 : Colors.red.shade100,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        _isAnswerCorrect ? Icons.check : Icons.close,
-                        color: _isAnswerCorrect ? Colors.green.shade700 : Colors.red.shade700,
-                        size: 16,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      _isAnswerCorrect ? 'Tepat Sekali!' : 'Belum Tepat',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  _isAnswerCorrect
-                      ? 'Peluang munculnya mata dadu genap adalah 3/6.'
-                      : 'Coba perhatikan kembali tabel, khususnya pada peluang empiris mata dadu genap yang mengarah pada nilai tertentu yaitu 3/6.',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _isAnswerCorrect ? _finishExperiment : () {
-                      setState(() {
-                        _showFeedback = false;
-                        _selectedAnswer = null;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1D2939),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    child: Text(
-                      _isAnswerCorrect ? 'Selesai' : 'Coba Lagi',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        else
-          // Answer options
-          Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildAnswerButton("1/6"),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildAnswerButton("2/6"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildAnswerButton("3/6"),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildAnswerButton("4/6"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildAnswerButton("5/6"),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildAnswerButton("6/6"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: Text(
-                  'choose an answer',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-              ),
-            ],
-          ),
       ],
     );
   }
@@ -675,7 +643,7 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
     return SizedBox(
       height: 48,
       child: OutlinedButton(
-        onPressed: () => _selectAnswer(text),
+        onPressed: () => onSelectAnswer(text),
         style: OutlinedButton.styleFrom(
           foregroundColor: Colors.black87,
           backgroundColor: Colors.white,

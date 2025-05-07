@@ -90,7 +90,7 @@ class CorrectAnswerPage extends StatelessWidget {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/third_question');
+                    Navigator.pushNamed(context, '/second_question');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1D2939),
