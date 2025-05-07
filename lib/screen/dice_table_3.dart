@@ -26,7 +26,6 @@ class DiceResultsTablePage3 extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header section
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(

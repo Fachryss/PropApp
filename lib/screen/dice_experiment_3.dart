@@ -84,6 +84,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage3> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 16),
               // Header section
               Container(
                 padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),

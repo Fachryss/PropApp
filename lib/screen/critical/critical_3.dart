@@ -62,7 +62,7 @@ class Critical3Page extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          'assets/image/PakRendi.png',
+                          'assets/images/user.png',
                           width: 45,
                           height: 45,
                         ),

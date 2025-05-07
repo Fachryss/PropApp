@@ -20,15 +20,25 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
   String currentText =
       "Peluang empiris adalah perbandingan banyaknya kejadian yang muncul dengan banyak percobaan yang dilakukan.";
 
+  Timer? _timer;
+
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 15), () {
-      setState(() {
-        currentText =
-            "Kolom frekuensi berisi hasil random muncul mata dadu masing-masing, peluang empiris berisi nilai frekuensi dibagi dengan total pelemparan yang dipilih.";
-      });
+    _timer = Timer(Duration(seconds: 15), () {
+      if (mounted) {
+        setState(() {
+          currentText =
+              "Kolom frekuensi berisi hasil random muncul mata dadu masing-masing, peluang empiris berisi nilai frekuensi dibagi dengan total pelemparan yang dipilih.";
+        });
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -48,7 +58,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 47),
+              const SizedBox(height: 53),
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -88,9 +98,9 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                         const Text(
                           'Mata dadu',
                           style: TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFF1F2937),
-                          ),
+                              fontSize: 11,
+                              color: Color(0xFF1F2937),
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -104,9 +114,9 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                         const Text(
                           'Frekuensi',
                           style: TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFF1F2937),
-                          ),
+                              fontSize: 11,
+                              color: Color(0xFF1F2937),
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -120,9 +130,9 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                         const Text(
                           'Peluang empiris',
                           style: TextStyle(
-                            fontSize: 11,
-                            color: Color(0xFF1F2937),
-                          ),
+                              fontSize: 11,
+                              color: Color(0xFF1F2937),
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -164,6 +174,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
+                        color: Color(0xFF1F2937),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -178,7 +189,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                       child: Row(
                         children: [
                           Image.asset(
-                            "assets/image/PakRendi.png",
+                            "assets/images/PakRendi.png",
                             width: 45,
                             height: 45,
                           ),
@@ -212,7 +223,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                   ],
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 63),
               Container(
                 height: 56,
                 width: double.infinity,
@@ -231,7 +242,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                   child: const Text(
                     'Continue Test 2',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
