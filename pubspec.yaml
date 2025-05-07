@@ -63,7 +63,9 @@ flutter:
   - assets/image/
   - assets/images/dadu.png
   - assets/images/robot.png
+  - assets/images/user.png
   - assets/image/koin.png
+
   fonts:
     - family: Poppins
       fonts:

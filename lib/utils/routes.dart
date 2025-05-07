@@ -13,10 +13,12 @@ import '../screen/critical/critical_3.dart';
 import '../screen/question_checkbox.dart';
 import '../screen/interactive_page.dart';
 import '../screen/multiple_choice_page.dart';
+
 import '../screen/closing_page.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
   // '/': (_) => const SplashScreen(),
+
   // '/intro': (_) => const IntroPage(),
   // '/critical1': (_) => const Critical1Page(),
   // '/critical2': (_) => const Critical2Page(),
@@ -25,7 +27,6 @@ final Map<String, WidgetBuilder> appRoutes = {
   // '/checkbox2': (_) => const QuestionCheckboxPage2(),
   '/interactive': (_) => const ProbabilitySelectionPage(),
   '/dice': (_) => const DiceExperimentPage1(),
-  '/dice2': (_) => const DiceExperimentPage2(),
   '/dice3': (_) => const DiceExperimentPage3(),
   // '/diceTable1': (_) => const DiceResultsTablePage1(),
   '/diceSummary': (_) => const ExperimentSummaryPage(),

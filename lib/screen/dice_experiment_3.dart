@@ -15,6 +15,8 @@ class DiceExperimentPage3 extends StatefulWidget {
 
 class _DiceExperimentPageState extends State<DiceExperimentPage3> {
   String? selectedOption;
+
+  bool get hasSelection => selectedOption != null;
   final List<String> options = [
     '30 Kali',
     '100 Kali',
@@ -41,7 +43,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage3> {
       int roll = _random.nextInt(6) + 1;
       results[roll.toString()] = (results[roll.toString()] ?? 0) + 1;
 
-      if (roll % 2 == 0){
+      if (roll % 2 == 0) {
         results['ganjil'] = (results['ganjil'] ?? 0) + 1;
       } else {
         results['genap'] = (results['genap'] ?? 0) + 1;
@@ -53,7 +55,8 @@ class _DiceExperimentPageState extends State<DiceExperimentPage3> {
     return results;
   }
 
-  Future<void> _saveResultsStorage(int totalRools, Map<String, int> result) async {
+  Future<void> _saveResultsStorage(
+      int totalRools, Map<String, int> result) async {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setInt('total_rolls_a', totalRools);
@@ -69,10 +72,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage3> {
     await prefs.setInt('dice_c_genap', result['genap'] ?? 0);
 
     await prefs.setString('dice_result_c', jsonEncode(result));
-
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -80,41 +80,39 @@ class _DiceExperimentPageState extends State<DiceExperimentPage3> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          padding: const EdgeInsets.fromLTRB(25, 20, 25, 51),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header section
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1D2939),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Text(
                   'Percobaan 3',
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,  
-                  ),
+                      fontSize: 23,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
                 ),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 13),
 
               // Instruction text
               const Text(
                 'Anda bisa memilih beberapa kali percobaan yang ingin anda lakukan.',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  // color: Colors.black54,
+                  color: Color(0xFF6B7280),
                 ),
               ),
 
-              const SizedBox(height: 36),
+              const SizedBox(height: 30),
 
               // Option buttons
               ...options.map((option) => Padding(
@@ -125,26 +123,32 @@ class _DiceExperimentPageState extends State<DiceExperimentPage3> {
               const Spacer(),
 
               // Bottom button
-              SizedBox(
-                width: double.infinity,
+              AnimatedContainer(
                 height: 56,
+                width: double.infinity,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                transform: hasSelection
+                    ? (Matrix4.identity()..scale(1.01))
+                    : (Matrix4.identity()..scale(1.0)),
                 child: ElevatedButton(
-                  onPressed: selectedOption != null
+                  onPressed: hasSelection
                       ? () async {
                           final int numberOfRolls =
                               int.parse(selectedOption!.split(' ')[0]);
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
                               );
+                            },
+                          );
 
                           // Mock results for demonstration purposes
-                          final Map<String, int> mockResults = await _rollDice(numberOfRolls);
+                          final Map<String, int> mockResults =
+                              await _rollDice(numberOfRolls);
 
                           Navigator.push(
                             context,
@@ -168,27 +172,29 @@ class _DiceExperimentPageState extends State<DiceExperimentPage3> {
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedOption != null
-                        ? const Color(0xFF1D2939)
-                        : Colors.grey.shade200,
-                    foregroundColor: selectedOption != null
-                        ? Colors.white
-                        : Colors.grey.shade700,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
+                    backgroundColor:
+                        hasSelection ? Color(0xFF1D2939) : Color(0xFFF3F4F6),
+                    foregroundColor: Colors.white,
                     elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
                   ),
-                  child: Text(
-                    selectedOption != null
-                        ? 'Roll the dice'
-                        : 'Choose how many times',
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    // selectedOption != null
+                    //     ? 'Roll the dice'
+                    //     : 'Choose how many times',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: selectedOption != null
-                          ? Colors.white
-                          : Colors.grey.shade700,
+                      fontSize: hasSelection ? 20 : 19,
+                      fontWeight:
+                          hasSelection ? FontWeight.w600 : FontWeight.w500,
+                      color:
+                          hasSelection ? Colors.white : const Color(0xFF6B7280),
+                    ),
+                    child: Text(
+                      hasSelection ? 'Roll the dice!' : "Choose how many times",
                     ),
                   ),
                 ),
@@ -206,27 +212,30 @@ class _DiceExperimentPageState extends State<DiceExperimentPage3> {
     return InkWell(
       onTap: () {
         setState(() {
-          selectedOption = option;
+          selectedOption = isSelected ? null : option;
         });
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
         width: double.infinity,
-        height: 56,
+        height: 53,
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF1D2939) : Colors.white,
-          borderRadius: BorderRadius.circular(28),
+          color: isSelected ? Color(0xFF1F2937) : Colors.white,
+          borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: Colors.grey.shade300,
+            color: Colors.black.withOpacity(0.2),
             width: 1,
           ),
         ),
-        alignment: Alignment.center,
-        child: Text(
-          option,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.white : Colors.black87,
+        child: Center(
+          child: Text(
+            option,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              color: isSelected ? Colors.white : Color(0xFF1F2937),
+            ),
           ),
         ),
       ),
