@@ -130,7 +130,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
                       ? (Matrix4.identity()..scale(1.01))
                       : (Matrix4.identity()..scale(1.0)),
                   width: double.infinity,
-                    constraints: const BoxConstraints(minHeight: 0),
+                  constraints: const BoxConstraints(minHeight: 0),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: const Color(0xFFDBEAFE),

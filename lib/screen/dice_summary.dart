@@ -15,7 +15,8 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
   bool _isLoading = true;
 
   // State variables for questions
-  int _currentQuestionIndex = 0; // 0: no question, 1: first question, 2: second question
+  int _currentQuestionIndex =
+      0; // 0: no question, 1: first question, 2: second question
   String? _selectedAnswer;
   bool _showFeedback = false;
   bool _isAnswerCorrect = false;
@@ -23,34 +24,48 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
   // Define questions data structure
   final List<QuestionData> _questions = [
     QuestionData(
-      questionText: '1. Apakah peluang empiris mata dadu 1 cenderung mengarah pada nilai 1/6?',
+      questionText:
+          '1. Apakah peluang empiris mata dadu 1 cenderung mengarah pada nilai 1/6?',
       correctAnswer: '1/6',
       successFeedback: 'Tepat Sekali, peluang munculnya angka 1 adalah 1/6.',
-      failureFeedback: 'Coba perhatikan kembali tabel, terlihat bahwa peluang empiris benar mendekati nilai 1/6!',
+      failureFeedback:
+          'Coba perhatikan kembali tabel, terlihat bahwa peluang empiris benar mendekati nilai 1/6!',
     ),
     QuestionData(
-      questionText: '2. Bagaimana dengan peluang mata dadu genap (mata dadu 2, 4, dan 6)? Apakah mengarah pada nilai tertentu? Berapa',
+      questionText:
+          '2. Bagaimana dengan peluang mata dadu genap (mata dadu 2, 4, dan 6)? Apakah mengarah pada nilai tertentu? Berapa',
       correctAnswer: '3/6',
-      successFeedback: 'Tepat Sekali, peluang munculnya mata dadu genap adalah 3/6.',
-      failureFeedback: 'Coba perhatikan kembali tabel, khusunya pada peluang empiris mata dadu genap yang mengarah pada nilai tertentu yaitu 3/6.',
+      successFeedback:
+          'Tepat Sekali, peluang munculnya mata dadu genap adalah 3/6.',
+      failureFeedback:
+          'Coba perhatikan kembali tabel, khusunya pada peluang empiris mata dadu genap yang mengarah pada nilai tertentu yaitu 3/6.',
     ),
     QuestionData(
-      questionText: '3. Bagaimana dengan mata dadu 2, mengarah pada angka berapa peluang empirisnya?',
+      questionText:
+          '3. Bagaimana dengan mata dadu 2, mengarah pada angka berapa peluang empirisnya?',
       correctAnswer: '1/6',
-      successFeedback: 'Tepat Sekali, peluang munculnya mata dadu 2 adalah 1/6.',
-      failureFeedback: 'Coba perhatikan kembali tabel, khusunya pada peluang empiris mata dadu 2 yang mengarah pada nilai tertentu yaitu 1/6.',
+      successFeedback:
+          'Tepat Sekali, peluang munculnya mata dadu 2 adalah 1/6.',
+      failureFeedback:
+          'Coba perhatikan kembali tabel, khusunya pada peluang empiris mata dadu 2 yang mengarah pada nilai tertentu yaitu 1/6.',
     ),
     QuestionData(
-      questionText: '4. Bagaimana dengan peluang munculnya mata dadu yang lain seperti munculnya mata dadu 3, mata dadu 4, mata dadu 5, dan mata dadu 6? Apakah juga mengarah pada nilai 1/6?',
+      questionText:
+          '4. Bagaimana dengan peluang munculnya mata dadu yang lain seperti munculnya mata dadu 3, mata dadu 4, mata dadu 5, dan mata dadu 6? Apakah juga mengarah pada nilai 1/6?',
       correctAnswer: 'Ya',
-      successFeedback: 'Tepat Sekali, peluang munculnya suatu kejadian (muncul 1 sisi mata dadu) adalah 1/6.',
-      failureFeedback: 'Coba perhatikan kembali tabel, terlihat bahwa peluang empiris benar mendekati nilai 1/6!',
+      successFeedback:
+          'Tepat Sekali, peluang munculnya suatu kejadian (muncul 1 sisi mata dadu) adalah 1/6.',
+      failureFeedback:
+          'Coba perhatikan kembali tabel, terlihat bahwa peluang empiris benar mendekati nilai 1/6!',
     ),
     QuestionData(
-      questionText: '5. Bagaimana dengan peluang mata dadu ganjil (mata dadu 1, 3, dan 5)? Apakah juga mengarah pada nilai tertentu? Berapa',
+      questionText:
+          '5. Bagaimana dengan peluang mata dadu ganjil (mata dadu 1, 3, dan 5)? Apakah juga mengarah pada nilai tertentu? Berapa',
       correctAnswer: '3/6',
-      successFeedback: 'Tepat Sekali, peluang munculnya mata dadu ganjil adalah 3/6.',
-      failureFeedback: 'Coba perhatikan kembali tabel, khusunya pada peluang empiris mata dadu ganjil yang mengarah pada nilai tertentu yaitu 3/6.',
+      successFeedback:
+          'Tepat Sekali, peluang munculnya mata dadu ganjil adalah 3/6.',
+      failureFeedback:
+          'Coba perhatikan kembali tabel, khusunya pada peluang empiris mata dadu ganjil yang mengarah pada nilai tertentu yaitu 3/6.',
     ),
   ];
 
@@ -63,7 +78,7 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
   Future<void> _initializeData() async {
     prefs = await SharedPreferences.getInstance();
     final fetchedData = await DiceDataManager.fetchExperimentData();
-    
+
     setState(() {
       _experimentData = fetchedData;
       _isLoading = false;
@@ -75,10 +90,10 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
     setState(() {
       _selectedAnswer = answer;
       _showFeedback = true;
-      
+
       // Get current question (subtract 1 from index since questions array is 0-based)
       final currentQuestion = _questions[_currentQuestionIndex - 1];
-      
+
       // For question 4, handle "Ya" answer specially
       if (_currentQuestionIndex == 4) {
         _isAnswerCorrect = answer == "Ya";
@@ -103,7 +118,8 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text("Selesai!"),
-        content: Text("Anda telah menyelesaikan semua pertanyaan. Seharusnya navigasi ke halaman kesimpulan."),
+        content: Text(
+            "Anda telah menyelesaikan semua pertanyaan. Seharusnya navigasi ke halaman kesimpulan."),
         actions: [
           TextButton(
             onPressed: () {
@@ -127,7 +143,7 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
       _selectedAnswer = null;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +152,7 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
         child: _isLoading
             ? const Center(child: CircularProgressIndicator())
             : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                padding: const EdgeInsets.fromLTRB(25, 20, 25, 51),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,31 +161,32 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
                       const Text(
                         'Rekap seluruh percobaan',
                         style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          fontSize: 23,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1F2937),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 13),
                       const Text(
                         'Berikut adalah tabel rekap hasil dari seluruh percobaan yang sudah dilakukan.',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.black54,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF6B7280),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 30),
                       const Center(
                         child: Text(
                           'Peluang empiris',
                           style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF1F2937),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
 
                       // Tabel header
                       _buildTableHeader(),
@@ -182,10 +199,9 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
                         }).toList(),
                       ),
 
-                      const SizedBox(height: 24),
-
                       // Questions section
-                      if (_currentQuestionIndex > 0 && _currentQuestionIndex <= _questions.length)
+                      if (_currentQuestionIndex > 0 &&
+                          _currentQuestionIndex <= _questions.length)
                         QuestionWidget(
                           questionData: _questions[_currentQuestionIndex - 1],
                           selectedAnswer: _selectedAnswer,
@@ -193,8 +209,13 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
                           isAnswerCorrect: _isAnswerCorrect,
                           onSelectAnswer: _selectAnswer,
                           onRetry: _retryQuestion,
-                          onNext: _currentQuestionIndex < _questions.length ? _goToNextQuestion : _finishExperiment,
-                          nextButtonText: _currentQuestionIndex < _questions.length ? 'Lanjut' : 'Selesai',
+                          onNext: _currentQuestionIndex < _questions.length
+                              ? _goToNextQuestion
+                              : _finishExperiment,
+                          nextButtonText:
+                              _currentQuestionIndex < _questions.length
+                                  ? 'Lanjut'
+                                  : 'Selesai',
                         ),
                     ],
                   ),
@@ -214,13 +235,17 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Column(
               children: [
-                Icon(Icons.casino, size: 20, color: Colors.black54),
-                const SizedBox(height: 4),
+                Icon(
+                  Icons.casino_outlined,
+                  size: 24,
+                  color: Color(0xFF1F2937),
+                ),
+                const SizedBox(height: 7),
                 const Text(
                   'Mata dadu',
                   style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black54,
+                    fontSize: 11,
+                    color: Color(0xFF1F2937),
                   ),
                 ),
               ],
@@ -235,13 +260,14 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Column(
                 children: [
-                  Icon(Icons.bar_chart, size: 20, color: Colors.black54),
-                  const SizedBox(height: 4),
+                  Icon(Icons.bar_chart_outlined,
+                      size: 24, color: Color(0xFF1F2937)),
+                  const SizedBox(height: 7),
                   Text(
                     'Percobaan ${index + 1}',
                     style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54,
+                      fontSize: 11,
+                      color: Color(0xFF1F2937),
                     ),
                   ),
                 ],
@@ -267,8 +293,8 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
                   label,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
+                    fontSize: 11,
+                    color: Color(0xFF6B7280),
                   ),
                 ),
               ),
@@ -276,11 +302,12 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
                 return Expanded(
                   flex: 3,
                   child: Text(
-                    values[index + 1], // Skip the first value which is frequency
+                    values[
+                        index + 1], // Skip the first value which is frequency
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
+                      fontSize: 11,
+                      color: Color(0xFF6B7280),
                     ),
                   ),
                 );
@@ -336,19 +363,19 @@ class QuestionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 16),
-        
+        const SizedBox(height: 35),
+
         // Question box
         QuestionBox(text: questionData.questionText),
-        
-        const SizedBox(height: 16),
-        
+
+        const SizedBox(height: 35),
+
         // Feedback or Answer options
         if (showFeedback)
           FeedbackBox(
             isAnswerCorrect: isAnswerCorrect,
-            feedbackText: isAnswerCorrect 
-                ? questionData.successFeedback 
+            feedbackText: isAnswerCorrect
+                ? questionData.successFeedback
                 : questionData.failureFeedback,
             buttonText: isAnswerCorrect ? nextButtonText : 'Coba Lagi',
             onButtonPressed: isAnswerCorrect ? onNext : onRetry,
@@ -372,7 +399,7 @@ class QuestionBox extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
+        color: Color(0xFFDBEAFE),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -381,11 +408,12 @@ class QuestionBox extends StatelessWidget {
           Text(
             text,
             style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF1F2937),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 25),
           TeacherInfoRow(),
         ],
       ),
@@ -397,56 +425,54 @@ class QuestionBox extends StatelessWidget {
 class TeacherInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 2,
-                offset: const Offset(0, 1),
+    return Container(
+      width: 158,
+      height: 68,
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/image/PakRendi.png',
+            width: 45,
+            height: 45,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Mr.Rendi",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF1F2937),
+                ),
               ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                "Math Teacher",
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF6B7280),
+                ),
+              )
             ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.network(
-              'https://api.placeholder.com/40/40', 
-              width: 40, 
-              height: 40,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.person, size: 24);
-              },
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              'Mr.Rendi',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-            Text(
-              'Math Teacher',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.black54,
-              ),
-            ),
-          ],
-        ),
-      ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -468,77 +494,91 @@ class FeedbackBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: isAnswerCorrect ? Colors.green.shade50 : Colors.red.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isAnswerCorrect ? Colors.green.shade200 : Colors.red.shade200,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isAnswerCorrect ? Color(0xFFE6F4EA) : Color(0xFFFDECEA),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isAnswerCorrect ? Color(0xFF2E7D32) : Color(0xFFC62828),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: isAnswerCorrect ? Colors.green.shade100 : Colors.red.shade100,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  isAnswerCorrect ? Icons.check : Icons.close,
-                  color: isAnswerCorrect ? Colors.green.shade700 : Colors.red.shade700,
-                  size: 16,
-                ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: isAnswerCorrect
+                          ? Colors.green.shade100
+                          : Colors.red.shade100,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      isAnswerCorrect ? Icons.check : Icons.close,
+                      color: isAnswerCorrect
+                          ? Color(0xFF2E7D32)
+                          : Color(0xFFC62828),
+                      size: 16,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    isAnswerCorrect ? 'Tepat Sekali!' : 'Belum Tepat',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      color: isAnswerCorrect
+                          ? Color(0xFF2E7D32)
+                          : Color(0xFFC62828),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 12),
+              const SizedBox(height: 12),
               Text(
-                isAnswerCorrect ? 'Tepat Sekali!' : 'Belum Tepat',
+                feedbackText,
                 style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF1F2937),
+                  fontSize: 15,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            feedbackText,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: onButtonPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1D2939),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 12),
+        ),
+        SizedBox(
+          height: 40,
+        ),
+        Container(
+          width: double.infinity,
+          height: 56,
+          child: ElevatedButton(
+            onPressed: onButtonPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF1D2939),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
               ),
-              child: Text(
-                buttonText,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+            ),
+            child: Text(
+              buttonText,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -555,9 +595,9 @@ class AnswerOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get the current question index from the closest StatefulWidget
-    final _ExperimentSummaryPageState state = 
+    final _ExperimentSummaryPageState state =
         context.findAncestorStateOfType<_ExperimentSummaryPageState>()!;
-    
+
     // For question 4, we show Yes/No options
     if (state._currentQuestionIndex == 4) {
       return Column(
@@ -573,20 +613,21 @@ class AnswerOptions extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Center(
             child: Text(
               'choose an answer',
               style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade600,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF6B7280),
               ),
             ),
           ),
         ],
       );
     }
-    
+
     // For other questions, show fraction options
     return Column(
       children: [
@@ -625,13 +666,14 @@ class AnswerOptions extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
         Center(
           child: Text(
             'choose an answer',
             style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade600,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF6B7280),
             ),
           ),
         ),
@@ -641,21 +683,21 @@ class AnswerOptions extends StatelessWidget {
 
   Widget _buildAnswerButton(String text) {
     return SizedBox(
-      height: 48,
+      height: 53,
       child: OutlinedButton(
         onPressed: () => onSelectAnswer(text),
         style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.black87,
           backgroundColor: Colors.white,
           side: BorderSide(color: Colors.grey.shade300),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(25),
           ),
         ),
         child: Text(
           text,
           style: const TextStyle(
-            fontSize: 16,
+            color: const Color(0xFF1F2937),
+            fontSize: 18,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -669,10 +711,10 @@ class DiceDataManager {
   // Fetch data from SharedPreferences and organize it into the desired format
   static Future<Map<String, List<String>>> fetchExperimentData() async {
     final prefs = await SharedPreferences.getInstance();
-    
+
     // Define expected pages
     final pages = ['a', 'b', 'c'];
-    
+
     // Initialize result map
     final Map<String, List<String>> experimentData = {
       '1': ['0', '0/0', '0/0', '0/0'],
@@ -684,39 +726,41 @@ class DiceDataManager {
       'Genap': ['0', '0/0', '0/0', '0/0'],
       'Ganjil': ['0', '0/0', '0/0', '0/0'],
     };
-    
+
     // Populate data from available pages
     for (int i = 0; i < pages.length; i++) {
       final page = pages[i];
       final columnIndex = i + 1; // 1-based index for columns (1, 2, 3)
-      
+
       // Get total rolls for this page
       final resultKey = 'dice_result_$page';
       final resultValue = prefs.getString(resultKey) ?? '{}';
       Map<String, dynamic> resultMap;
-      
+
       try {
         resultMap = jsonDecode(resultValue) as Map<String, dynamic>;
       } catch (e) {
         resultMap = {};
       }
-      
+
       // Calculate total rolls for this page
       int totalRolls = 0;
       for (int diceValue = 1; diceValue <= 6; diceValue++) {
-        totalRolls += int.tryParse(resultMap['$diceValue']?.toString() ?? '0') ?? 0;
+        totalRolls +=
+            int.tryParse(resultMap['$diceValue']?.toString() ?? '0') ?? 0;
       }
-      
+
       // Process dice values 1-6
       for (int diceValue = 1; diceValue <= 6; diceValue++) {
         // Get the actual value from the result map
-        final diceCount = int.tryParse(resultMap['$diceValue']?.toString() ?? '0') ?? 0;
-        
+        final diceCount =
+            int.tryParse(resultMap['$diceValue']?.toString() ?? '0') ?? 0;
+
         // Update the raw count in the first column (only for the first page)
         if (page == 'a') {
           experimentData['$diceValue']![0] = diceCount.toString();
         }
-        
+
         // Update the fraction in the appropriate column
         if (totalRolls > 0) {
           experimentData['$diceValue']![columnIndex] = '$diceCount/$totalRolls';
@@ -724,26 +768,27 @@ class DiceDataManager {
           experimentData['$diceValue']![columnIndex] = '0/0';
         }
       }
-      
+
       // Calculate odd and even counts
       int oddCount = 0;
       int evenCount = 0;
-      
+
       for (int diceValue = 1; diceValue <= 6; diceValue++) {
-        final count = int.tryParse(resultMap['$diceValue']?.toString() ?? '0') ?? 0;
+        final count =
+            int.tryParse(resultMap['$diceValue']?.toString() ?? '0') ?? 0;
         if (diceValue % 2 == 0) {
           evenCount += count;
         } else {
           oddCount += count;
         }
       }
-      
+
       // Update raw counts for first page
       if (page == 'a') {
         experimentData['Ganjil']![0] = oddCount.toString();
         experimentData['Genap']![0] = evenCount.toString();
       }
-      
+
       // Update odd/even ratios
       if (totalRolls > 0) {
         experimentData['Ganjil']![columnIndex] = '$oddCount/$totalRolls';
@@ -753,7 +798,7 @@ class DiceDataManager {
         experimentData['Genap']![columnIndex] = '0/0';
       }
     }
-    
+
     return experimentData;
   }
 }

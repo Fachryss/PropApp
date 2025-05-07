@@ -3,6 +3,7 @@ import 'package:propapp/screen/answer_recap.dart';
 import 'package:propapp/screen/dice_experiment_1.dart';
 import 'package:propapp/screen/dice_experiment_2.dart';
 import 'package:propapp/screen/dice_experiment_3.dart';
+import 'package:propapp/screen/dice_summary.dart';
 import 'package:propapp/screen/dice_table_1.dart';
 import 'package:propapp/screen/dice_table_2dart';
 import 'package:propapp/screen/dice_table_3.dart';
@@ -11,10 +12,10 @@ import 'utils/routes.dart';
 
 void main() {
   runApp(const MiniEduApp());
-  }
+}
 
 class MiniEduApp extends StatelessWidget {
-  const MiniEduApp({super.key});  
+  const MiniEduApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +34,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      home: DiceExperimentPage1(),
+      home: ExperimentSummaryPage(),
       routes: appRoutes,
     );
   }
