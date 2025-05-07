@@ -43,7 +43,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      home: KesimpulanRecap(),
+      home: MultipleChoicePage(),
       routes: appRoutes,
     );
   }
