@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:propapp/screen/Kesimpulan_recap.dart';
 import 'package:propapp/screen/answer_recap.dart';
 import 'package:propapp/screen/critical/critical_1.dart';
 import 'package:propapp/screen/critical/critical_2.dart';
@@ -15,6 +16,7 @@ import 'package:propapp/screen/multiple_choice_page.dart';
 import 'package:propapp/screen/question_checkbox.dart';
 import 'package:propapp/screen/question_checkbox_2.dart';
 import 'package:propapp/screen/splash_screen.dart';
+import 'package:propapp/screen/summary_page.dart';
 import 'utils/routes.dart';
 
 void main() {
@@ -41,10 +43,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      home: DiceResultsTablePage2(
-        totalRolls: 100,
-        results: {},
-      ),
+      home: KesimpulanRecap(),
       routes: appRoutes,
     );
   }
