@@ -7,8 +7,9 @@ import 'package:propapp/screen/dice_table_2dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DiceExperimentPage2 extends StatefulWidget {
-  const DiceExperimentPage2(
-      {super.key, required int totalRolls, required Map results});
+  const DiceExperimentPage2({
+    super.key,
+  });
 
   @override
   State<DiceExperimentPage2> createState() => _DiceExperimentPageState();

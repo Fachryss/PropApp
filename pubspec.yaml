@@ -60,11 +60,7 @@ flutter:
   uses-material-design: true
 
   assets:
-  - assets/image/
-  - assets/images/dadu.png
-  - assets/images/robot.png
-  - assets/images/user.png
-  - assets/image/koin.png
+  - assets/images/
 
   fonts:
     - family: Poppins

@@ -48,7 +48,7 @@ class _ProbabilitySelectionPageState extends State<ProbabilitySelectionPage> {
                 'coin',
                 'Koin',
                 Image.asset(
-                  'assets/image/dadu.png',
+                  'assets/images/dadu2.png',
                   width: double.infinity,
                   height: 220,
                 ),
@@ -61,7 +61,7 @@ class _ProbabilitySelectionPageState extends State<ProbabilitySelectionPage> {
                 'dice',
                 'Dadu',
                 Image.asset(
-                  'assets/image/koin.png',
+                  'assets/images/Koin.png',
                   color: Colors.white,
                   width: double.infinity,
                   height: 220,

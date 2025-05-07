@@ -163,7 +163,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              'assets/image/PakRendi.png',
+                              'assets/images/PakRendi.png',
                               width: 45,
                               height: 45,
                             ),
