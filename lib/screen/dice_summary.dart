@@ -467,26 +467,14 @@ class DiceDataManager {
     // Define expected pages
     final pages = ['a', 'b', 'c'];
     
-    // Helper function to safely get values
-    String getValueOrDefault(String key, {String defaultValue = '0'}) {
-      return prefs.containsKey(key) ? '${prefs.getInt(key) ?? 0}' : defaultValue;
-    }
-    
-    // Helper function to safely get ratio values
-    String getRatioValue(String key, String totalKey, {String defaultValue = '0/0'}) {
-      final value = prefs.getInt(key) ?? 0;
-      final total = prefs.getInt(totalKey) ?? 0;
-      return total > 0 ? '$value/$total' : defaultValue;
-    }
-    
     // Initialize result map
     final Map<String, List<String>> experimentData = {
-      '1': ['0', '0', '0', '0'],
-      '2': ['0', '0', '0', '0'],
-      '3': ['0', '0', '0', '0'],
-      '4': ['0', '0', '0', '0'],
-      '5': ['0', '0', '0', '0'],
-      '6': ['0', '0', '0', '0'],
+      '1': ['0', '0/0', '0/0', '0/0'],
+      '2': ['0', '0/0', '0/0', '0/0'],
+      '3': ['0', '0/0', '0/0', '0/0'],
+      '4': ['0', '0/0', '0/0', '0/0'],
+      '5': ['0', '0/0', '0/0', '0/0'],
+      '6': ['0', '0/0', '0/0', '0/0'],
       'Genap': ['0', '0/0', '0/0', '0/0'],
       'Ganjil': ['0', '0/0', '0/0', '0/0'],
     };
@@ -496,53 +484,67 @@ class DiceDataManager {
       final page = pages[i];
       final columnIndex = i + 1; // 1-based index for columns (1, 2, 3)
       
-      // Get dice results for numbers 1-6
+      // Get total rolls for this page
+      final resultKey = 'dice_result_$page';
+      final resultValue = prefs.getString(resultKey) ?? '{}';
+      Map<String, dynamic> resultMap;
+      
+      try {
+        resultMap = jsonDecode(resultValue) as Map<String, dynamic>;
+      } catch (e) {
+        resultMap = {};
+      }
+      
+      // Calculate total rolls for this page
+      int totalRolls = 0;
       for (int diceValue = 1; diceValue <= 6; diceValue++) {
-        final diceKey = 'dice_${page}_$diceValue';
-        final value = getValueOrDefault(diceKey);
+        totalRolls += int.tryParse(resultMap['$diceValue']?.toString() ?? '0') ?? 0;
+      }
+      
+      // Process dice values 1-6
+      for (int diceValue = 1; diceValue <= 6; diceValue++) {
+        // Get the actual value from the result map
+        final diceCount = int.tryParse(resultMap['$diceValue']?.toString() ?? '0') ?? 0;
         
-        // Update the corresponding value in the experimentData map
-        if (experimentData['$diceValue'] != null && columnIndex < experimentData['$diceValue']!.length) {
-          experimentData['$diceValue']![columnIndex] = value;
+        // Update the raw count in the first column (only for the first page)
+        if (page == 'a') {
+          experimentData['$diceValue']![0] = diceCount.toString();
         }
         
-        // Update the dice result column based on the corresponding page's data
-        if (experimentData['$diceValue'] != null) {
-          final resultKey = 'dice_result_$page';
-          final resultValue = prefs.getString(resultKey) ?? '{}';
-          final resultMap = jsonDecode(resultValue) as Map<String, dynamic>;
-          
-          // For the respective dice value, update the corresponding column
-          // For page 'a', update column 1; for page 'b', update column 2; etc.
-          if (columnIndex < experimentData['$diceValue']!.length) {
-            experimentData['$diceValue']![columnIndex] = resultMap['$diceValue']?.toString() ?? '0';
-          }
-          
-          // For the first column (index 0), we'll use the data from page 'a'
-          if (page == 'a') {
-            experimentData['$diceValue']![0] = resultMap['$diceValue']?.toString() ?? '0';
-          }
+        // Update the fraction in the appropriate column
+        if (totalRolls > 0) {
+          experimentData['$diceValue']![columnIndex] = '$diceCount/$totalRolls';
+        } else {
+          experimentData['$diceValue']![columnIndex] = '0/0';
         }
       }
       
-      // Get odd/even results
-      final totalKey = 'total_rolls_$page';
-      final ganjilKey = 'dice_${page}_ganjil';
-      final genapKey = 'dice_${page}_genap';
+      // Calculate odd and even counts
+      int oddCount = 0;
+      int evenCount = 0;
+      
+      for (int diceValue = 1; diceValue <= 6; diceValue++) {
+        final count = int.tryParse(resultMap['$diceValue']?.toString() ?? '0') ?? 0;
+        if (diceValue % 2 == 0) {
+          evenCount += count;
+        } else {
+          oddCount += count;
+        }
+      }
+      
+      // Update raw counts for first page
+      if (page == 'a') {
+        experimentData['Ganjil']![0] = oddCount.toString();
+        experimentData['Genap']![0] = evenCount.toString();
+      }
       
       // Update odd/even ratios
-      if (experimentData['Ganjil'] != null && columnIndex < experimentData['Ganjil']!.length) {
-        experimentData['Ganjil']![columnIndex] = getRatioValue(ganjilKey, totalKey);
-      }
-      
-      if (experimentData['Genap'] != null && columnIndex < experimentData['Genap']!.length) {
-        experimentData['Genap']![columnIndex] = getRatioValue(genapKey, totalKey);
-      }
-      
-      // For first page (page 'a'), also update the first column with total counts
-      if (page == 'a') {
-        experimentData['Ganjil']![0] = getValueOrDefault(ganjilKey);
-        experimentData['Genap']![0] = getValueOrDefault(genapKey);
+      if (totalRolls > 0) {
+        experimentData['Ganjil']![columnIndex] = '$oddCount/$totalRolls';
+        experimentData['Genap']![columnIndex] = '$evenCount/$totalRolls';
+      } else {
+        experimentData['Ganjil']![columnIndex] = '0/0';
+        experimentData['Genap']![columnIndex] = '0/0';
       }
     }
     

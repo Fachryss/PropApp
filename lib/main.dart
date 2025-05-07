@@ -11,7 +11,7 @@ import 'utils/routes.dart';
 
 void main() {
   runApp(const MiniEduApp());
-}
+  }
 
 class MiniEduApp extends StatelessWidget {
   const MiniEduApp({super.key});  
