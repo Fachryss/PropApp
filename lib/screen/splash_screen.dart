@@ -8,57 +8,70 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/intro');
     });
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      body: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Menambah jarak vertikal di atas teks PROAPP
-                  const SizedBox(height: 80), // Menambahkan jarak ke atas
 
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacementNamed(context, '/intro');
+    });
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFFFFF),
+      body: Stack(
+        children: [
+          // Konten tengah
+          Center(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: screenHeight * 0.25),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: screenHeight * 0.1),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
                         'assets/images/dadu.png',
-                        width: 75,
-                        height: 75,
+                        width: screenWidth * 0.2,
+                        height: screenWidth * 0.2,
                       ),
-                      const SizedBox(),
-                      const Text(
+                      SizedBox(width: screenWidth * 0.03),
+                      Text(
                         'PROAPP',
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 36,
+                          fontSize: screenWidth * 0.08,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xFF1F2937),
+                          color: const Color(0xFF1F2937),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(), // Menambah jarak antara "PROAPP" dan deskripsi
-                  const Text(
+                  SizedBox(height: screenHeight * 0.01),
+                  Text(
                     'Application for Probability Lesson',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 18,
+                      fontSize: screenWidth * 0.035,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF1F2937),
+                      color: const Color(0xFF1F2937),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          SizedBox(
-            width: double.infinity,
+
+          // Gambar robot menempel di bawah tanpa jarak putih
+          Align(
+            alignment: Alignment.bottomCenter,
             child: Image.asset(
               'assets/images/robot.png',
-              fit: BoxFit.cover, // Ganti dengan gambar bawah kamu
+              width: screenWidth,
+              height: screenHeight * 0.20,
+              fit: BoxFit.fill, // atau coba BoxFit.cover jika perlu
             ),
           ),
         ],

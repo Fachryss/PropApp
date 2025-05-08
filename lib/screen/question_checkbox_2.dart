@@ -4,54 +4,57 @@ class QuestionCheckboxPage2 extends StatefulWidget {
   const QuestionCheckboxPage2({super.key});
 
   @override
-  State<QuestionCheckboxPage2> createState() => _QuestionCheckboxPageState();
+  State<QuestionCheckboxPage2> createState() => _QuestionCheckboxPage2State();
 }
 
-class _QuestionCheckboxPageState extends State<QuestionCheckboxPage2> {
+class _QuestionCheckboxPage2State extends State<QuestionCheckboxPage2> {
   String? selectedOption;
 
   bool get hasSelection => selectedOption != null;
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(25, 20, 25, 51),
+          padding: const EdgeInsets.fromLTRB(25, 20, 25, 51),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
-              const Text(
+              SizedBox(height: screenHeight * 0.02),
+              Text(
                 'Apa yang mendasari \njawabanmu tersebut?',
                 style: TextStyle(
-                  fontSize: 23,
+                  fontSize: screenWidth * 0.045,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1F2937),
+                  color: const Color(0xFF1F2937),
                 ),
               ),
-              const SizedBox(height: 13),
-              const Text(
+              SizedBox(height: screenHeight * 0.01),
+              Text(
                 'Pilih alasan anda memilih jawaban itu.',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: screenWidth * 0.035,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF6B7280),
+                  color: const Color(0xFF6B7280),
                 ),
               ),
-              const SizedBox(height: 30),
-              _buildOptionItem(
-                  'Jumlah penjualan gaun terbanyak.', Icons.trending_up),
-              const SizedBox(height: 27),
-              _buildOptionItem(
-                  'Jumlah complain paling sedikit.', Icons.trending_down),
-              const SizedBox(height: 27),
+              SizedBox(height: screenHeight * 0.03),
+              _buildOptionItem('Jumlah penjualan gaun terbanyak.',
+                  Icons.trending_up, screenWidth),
+              SizedBox(height: screenHeight * 0.02),
+              _buildOptionItem('Jumlah complain paling sedikit.',
+                  Icons.trending_down, screenWidth),
+              SizedBox(height: screenHeight * 0.02),
               _buildOptionItem(
                   'Perbandingan jumlah complain\ndengan jumlah penjualannya.',
-                  Icons.keyboard_option_key),
+                  Icons.keyboard_option_key,
+                  screenWidth),
               const Spacer(),
-              // Next button that appears only when at least one option is selected
               AnimatedOpacity(
                 opacity: hasSelection ? 1.0 : 0.0,
                 duration: const Duration(milliseconds: 300),
@@ -89,7 +92,7 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage2> {
     );
   }
 
-  Widget _buildOptionItem(String text, IconData iconData) {
+  Widget _buildOptionItem(String text, IconData iconData, double screenWidth) {
     final isSelected = selectedOption == text;
     return GestureDetector(
       onTap: () {
@@ -97,32 +100,31 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage2> {
           selectedOption = isSelected ? null : text;
         });
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Left side with icon and text
-          Row(
-            children: [
-              Icon(
-                iconData,
-                size: 25,
-                color: Color(0xFF1F2937),
-              ),
-              const SizedBox(width: 15),
-              Text(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              iconData,
+              size: screenWidth * 0.06,
+              color: const Color(0xFF1F2937),
+            ),
+            SizedBox(width: screenWidth * 0.03),
+            Expanded(
+              child: Text(
                 text,
-                style: const TextStyle(
-                  fontSize: 15,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1F2937),
+                  color: const Color(0xFF1F2937),
                 ),
               ),
-            ],
-          ),
-
-          // Animated checkbox
-          AnimatedCheckbox(isChecked: isSelected),
-        ],
+            ),
+            const SizedBox(width: 10),
+            AnimatedCheckbox(isChecked: isSelected),
+          ],
+        ),
       ),
     );
   }
@@ -198,11 +200,12 @@ class _AnimatedCheckboxState extends State<AnimatedCheckbox>
       width: 25,
       height: 25,
       decoration: BoxDecoration(
-        color: widget.isChecked ? Color(0xFF1F2937) : Colors.transparent,
+        color: widget.isChecked ? const Color(0xFF1F2937) : Colors.transparent,
         border: Border.all(
-          color: widget.isChecked ? Color(0xFF1F2937) : Color(0xFF6B7280),
+          color: widget.isChecked
+              ? const Color(0xFF1F2937)
+              : const Color(0xFF6B7280),
           width: 1.5,
-          style: BorderStyle.solid,
         ),
         borderRadius: BorderRadius.circular(5),
       ),
