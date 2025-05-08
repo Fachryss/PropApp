@@ -17,7 +17,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage2> with TickerPro
 
   bool get hasSelection => selectedOption != null;
 
-  final List<String> options = [
+  final List<String> options = [  
     '30 Kali',
     '100 Kali',
     '200 Kali',
