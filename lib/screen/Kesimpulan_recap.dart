@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Critical3Page extends StatelessWidget {
-  const Critical3Page({super.key});
+class KesimpulanRecap extends StatelessWidget {
+  const KesimpulanRecap({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class Critical3Page extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Masalah Nyata",
+                    "Kesimpulan",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
@@ -37,10 +37,10 @@ class Critical3Page extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "Saat ini kamu mendapat pesanan dari konsumen prioritas dengan jumlah besar yang menginginkan kualitas terbaik (zero mistake) dari salah satu gaun yang sudah kamu buat. Menurutmu berdasarkan data penjualan yang sudah ada, gaun mana yang akan kamu rekomendasikan ke konsumen tersebut yang memiliki peluang terbaik?",
+                  const Text(
+                    "Dari percobaan yang kita lakukan:\n\n• Peluang kejadian munculnya 1 sisi mata dadu (misalkan kejadian munculnya mata dadu 5) adalah 1/6.\n\n• Peluang kejadian munculnya mata dadu genap (muncul mata dadu 2, 4, atau 6) adalah 3/6.\n\n• Peluang kejadian munculnya mata dadu ganjil (muncul mata dadu 1, 3, atau 5) adalah 3/6.\n\nSehingga, dapat dibuat Kesimpulan bahwa, Peluang suatu kejadian (P)",
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF1F2937),
                     ),
@@ -49,7 +49,7 @@ class Critical3Page extends StatelessWidget {
                     height: 25,
                   ),
                   Container(
-                    width: 210,
+                    width: 158,
                     height: 68,
                     alignment: Alignment.topLeft,
                     padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
@@ -62,7 +62,7 @@ class Critical3Page extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          'assets/images/user.png',
+                          'assets/images/PakRendi.png',
                           width: 45,
                           height: 45,
                         ),
@@ -74,7 +74,7 @@ class Critical3Page extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Linda Yang",
+                              "Mr.Rendi",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -85,13 +85,13 @@ class Critical3Page extends StatelessWidget {
                               height: 5,
                             ),
                             Text(
-                              "Lead Product Designer",
+                              "Math Teacher",
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xFF6B7280),
                               ),
-                            ),
+                            )
                           ],
                         )
                       ],
@@ -105,7 +105,7 @@ class Critical3Page extends StatelessWidget {
                 height: 56,
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, '/checkbox'),
+                  onPressed: () => Navigator.pushNamed(context, '/critical2'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF1D2939),
                     elevation: 0,
@@ -114,7 +114,7 @@ class Critical3Page extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    "Go to question",
+                    "Next",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
