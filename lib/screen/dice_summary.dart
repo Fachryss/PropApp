@@ -119,7 +119,7 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
       builder: (context) => AlertDialog(
         title: Text("Selesai!"),
         content: Text(
-            "Anda telah menyelesaikan semua pertanyaan. Seharusnya navigasi ke halaman kesimpulan."),
+            "Anda telah menyelesaikan semua pertanyaan. Terima kasih!"),
         actions: [
           TextButton(
             onPressed: () {
@@ -439,7 +439,7 @@ class TeacherInfoRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            'assets/image/PakRendi.png',
+            'assets/images/PakRendi.png',
             width: 45,
             height: 45,
           ),
