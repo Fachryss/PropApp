@@ -15,78 +15,78 @@ class _ProbabilitySelectionPageState extends State<ProbabilitySelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(25, 20, 25, 51),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
-              const Text(
+              SizedBox(height: screenHeight * 0.001),
+              Text(
                 'Media mana yang kamu pilih\nuntuk belajar peluang: dadu\natau koin?',
                 style: TextStyle(
-                  fontSize: 23,
+                  fontSize: screenWidth * 0.045,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1F2937),
+                  color: const Color(0xFF1F2937),
                 ),
               ),
-              const SizedBox(height: 13),
-              const Text(
+              SizedBox(height: screenHeight * 0.015),
+              Text(
                 'Mana yang kamu pilih?',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: screenWidth * 0.035,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF6B7280),
+                  color: const Color(0xFF6B7280),
                 ),
               ),
-              const Spacer(),
+              SizedBox(height: screenHeight * 0.03),
 
-              // Coin option
+              // Coin option (gambar koin)
               _buildSelectionItem(
                 'coin',
                 'Koin',
                 Image.asset(
-                  'assets/images/dadu2.png',
+                  'assets/images/dadu2.png', // sesuai kode awal kamu
                   width: double.infinity,
                   height: 220,
+                  fit: BoxFit.contain,
                 ),
               ),
 
-              const SizedBox(height: 27),
+              SizedBox(height: screenHeight * 0.035),
 
-              // Dice option
+              // Dice option (gambar dadu)
               _buildSelectionItem(
                 'dice',
                 'Dadu',
                 Image.asset(
-                  'assets/images/Koin.png',
+                  'assets/images/Koin.png', // sesuai kode awal kamu
                   color: Colors.white,
                   width: double.infinity,
                   height: 220,
+                  fit: BoxFit.contain,
                 ),
               ),
 
-              const Spacer(),
+              SizedBox(height: screenHeight * 0.04),
 
-              // Next button that appears only when an option is selected
+              // Tombol Next
               AnimatedOpacity(
-                opacity: selectedOption != null ? 1.0 : 0.0,
+                opacity: hasSelection ? 1.0 : 0.0,
                 duration: const Duration(milliseconds: 300),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
-                  height: selectedOption != null ? 56 : 0,
+                  height: hasSelection ? 56 : 0,
                   width: double.infinity,
-                  child: selectedOption != null
+                  child: hasSelection
                       ? ElevatedButton(
                           onPressed: () {
-                            // Navigate to the appropriate page based on selection
-                            if (selectedOption == 'dice') {
-                              Navigator.pushNamed(context, '/dice');
-                            } else {
-                              Navigator.pushNamed(context, '/dice');
-                            }
+                            Navigator.pushNamed(context, '/dice');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF1D2939),
@@ -123,7 +123,7 @@ class _ProbabilitySelectionPageState extends State<ProbabilitySelectionPage> {
         });
       },
       child: AnimatedScale(
-        scale: isSelected ? 1.050 : 1.0, // Perbesar sedikit jika dipilih
+        scale: isSelected ? 1.05 : 1.0,
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         child: Container(
@@ -135,12 +135,13 @@ class _ProbabilitySelectionPageState extends State<ProbabilitySelectionPage> {
           child: Container(
             margin: const EdgeInsets.all(1),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14), // 12 - 2 (margin)
+              borderRadius: BorderRadius.circular(14),
             ),
             child: Column(
               children: [
-                SizedBox(
-                  child: Center(child: image),
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: image,
                 ),
               ],
             ),
