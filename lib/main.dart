@@ -46,7 +46,6 @@ class MiniEduApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: appRoutes,
-      onGenerateRoute: generateRoute,
     );
   }
 }
