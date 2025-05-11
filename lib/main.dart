@@ -46,7 +46,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      // home: SplashScreen1(),
+      initialRoute: '/',
       routes: appRoutes,
     );
   }

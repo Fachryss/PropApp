@@ -193,7 +193,7 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                             width: 45,
                             height: 45,
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 5),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,16 +201,16 @@ class _DiceResultsTablePage1State extends State<DiceResultsTablePage1> {
                               Text(
                                 "Mr.Rendi",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF1F2937),
                                 ),
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: 1),
                               Text(
                                 "Math Teacher",
                                 style: TextStyle(
-                                  fontSize: 11,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xFF6B7280),
                                 ),

@@ -12,7 +12,8 @@ class DiceExperimentPage1 extends StatefulWidget {
   State<DiceExperimentPage1> createState() => _DiceExperimentPageState();
 }
 
-class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerProviderStateMixin {
+class _DiceExperimentPageState extends State<DiceExperimentPage1>
+    with TickerProviderStateMixin {
   String? selectedOption;
 
   bool get hasSelection => selectedOption != null;
@@ -26,7 +27,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
   ];
 
   final Random _random = Random();
-  
+
   // Property to control GIF speed - can be adjusted as needed
   double gifSpeed = 1.5; // Slightly faster than default for better visual
 
@@ -103,9 +104,9 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                         color: Colors.white),
                   ),
                 ),
-          
+
                 const SizedBox(height: 13),
-          
+
                 // Instruction text
                 const Text(
                   'Anda bisa memilih beberapa kali percobaan yang ingin anda lakukan.',
@@ -115,9 +116,9 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                     color: Color(0xFF6B7280),
                   ),
                 ),
-          
+
                 const SizedBox(height: 30),
-          
+
                 // Option buttons
                 ...options.map(
                   (option) => Padding(
@@ -172,7 +173,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                                 height: 45,
                               ),
                               SizedBox(
-                                width: 10,
+                                width: 5,
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -181,18 +182,18 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                                   Text(
                                     "Mr.Rendi",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       color: Color(0xFF1F2937),
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 5,
+                                    height: 1,
                                   ),
                                   Text(
                                     "Math Teacher",
                                     style: TextStyle(
-                                      fontSize: 11,
+                                      fontSize: 10,
                                       fontWeight: FontWeight.w500,
                                       color: Color(0xFF6B7280),
                                     ),
@@ -206,9 +207,11 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                     ),
                   ),
                 ],
-          
-                const SizedBox(height: 30,),
-          
+
+                const SizedBox(
+                  height: 30,
+                ),
+
                 // Bottom button
                 AnimatedContainer(
                   height: 56,
@@ -223,7 +226,7 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                         ? () async {
                             final int numberOfRolls =
                                 int.parse(selectedOption!.split(' ')[0]);
-                            
+
                             // Show custom loading dialog with SpeedControlledGif
                             showDialog(
                               context: context,
@@ -239,7 +242,8 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                                         // Using the SpeedControlledGif widget with customizable speed
                                         SpeedControlledGif(
                                           assetPath: 'assets/images/dadu.gif',
-                                          speed: gifSpeed, // Use the class property for speed control
+                                          speed:
+                                              gifSpeed, // Use the class property for speed control
                                           width: 200,
                                           height: 200,
                                         ),
@@ -250,8 +254,10 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                                             horizontal: 16,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: Colors.white.withOpacity(0.8),
-                                            borderRadius: BorderRadius.circular(8),
+                                            color:
+                                                Colors.white.withOpacity(0.8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                           ),
                                           child: const Text(
                                             "Rolling dice...",
@@ -268,13 +274,14 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                                 );
                               },
                             );
-          
+
                             // Process dice rolls
-                            final Map<String, int> results = await _rollDice(numberOfRolls);
-                            
+                            final Map<String, int> results =
+                                await _rollDice(numberOfRolls);
+
                             // Ensure the loading animation shows for at least 4 seconds
                             await Future.delayed(const Duration(seconds: 6));
-                            
+
                             // Navigate to results page
                             Navigator.pop(context); // Close loading dialog
                             Navigator.push(
@@ -314,11 +321,14 @@ class _DiceExperimentPageState extends State<DiceExperimentPage1> with TickerPro
                         fontSize: hasSelection ? 20 : 19,
                         fontWeight:
                             hasSelection ? FontWeight.w600 : FontWeight.w500,
-                        color:
-                            hasSelection ? Colors.white : const Color(0xFF6B7280),
+                        color: hasSelection
+                            ? Colors.white
+                            : const Color(0xFF6B7280),
                       ),
                       child: Text(
-                        hasSelection ? 'Roll the dice!' : "Choose how many times",
+                        hasSelection
+                            ? 'Roll the dice!'
+                            : "Choose how many times",
                       ),
                     ),
                   ),
@@ -387,7 +397,8 @@ class SpeedControlledGif extends StatefulWidget {
   State<SpeedControlledGif> createState() => _SpeedControlledGifState();
 }
 
-class _SpeedControlledGifState extends State<SpeedControlledGif> with SingleTickerProviderStateMixin {
+class _SpeedControlledGifState extends State<SpeedControlledGif>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -398,14 +409,16 @@ class _SpeedControlledGifState extends State<SpeedControlledGif> with SingleTick
       duration: const Duration(milliseconds: 500),
     );
     // Start the animation with the specified speed
-    _controller.repeat(period: Duration(milliseconds: (1000 / widget.speed).round()));
+    _controller.repeat(
+        period: Duration(milliseconds: (1000 / widget.speed).round()));
   }
 
   @override
   void didUpdateWidget(SpeedControlledGif oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.speed != widget.speed) {
-      _controller.repeat(period: Duration(milliseconds: (1000 / widget.speed).round()));
+      _controller.repeat(
+          period: Duration(milliseconds: (1000 / widget.speed).round()));
     }
   }
 

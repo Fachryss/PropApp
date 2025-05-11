@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:propapp/screen/Kesimpulan_recap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ExperimentSummaryPage extends StatefulWidget {
@@ -444,7 +445,7 @@ class TeacherInfoRow extends StatelessWidget {
             height: 45,
           ),
           SizedBox(
-            width: 10,
+            width: 5,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -453,18 +454,18 @@ class TeacherInfoRow extends StatelessWidget {
               Text(
                 "Mr.Rendi",
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF1F2937),
                 ),
               ),
               SizedBox(
-                height: 5,
+                height: 1,
               ),
               Text(
                 "Math Teacher",
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: FontWeight.w500,
                   color: Color(0xFF6B7280),
                 ),
