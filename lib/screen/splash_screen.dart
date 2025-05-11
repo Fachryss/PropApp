@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+class SplashScreen1 extends StatefulWidget {
+  const SplashScreen1({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<SplashScreen1> createState() => _SplashScreen1State();
+}
+
+class _SplashScreen1State extends State<SplashScreen1> {
+  @override
+  void initState() {
+    super.initState();
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/intro');
     });
+
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -15,6 +22,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/intro');
     });
+
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),

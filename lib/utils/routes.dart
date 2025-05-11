@@ -18,7 +18,8 @@ import '../screen/closing_page.dart';
 import 'package:propapp/screen/answer_recap.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
-  '/': (_) => const SplashScreen(),
+
+  '/': (_) => const SplashScreen1(),
   '/intro': (_) => const IntroPage(),
   '/critical1': (_) => const Critical1Page(),
   '/critical2': (_) => const Critical2Page(),

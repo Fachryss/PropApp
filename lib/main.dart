@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:propapp/screen/Kesimpulan_recap.dart';
 import 'package:propapp/screen/answer_recap.dart';
+import 'package:propapp/screen/closing_page.dart';
 import 'package:propapp/screen/critical/critical_1.dart';
 import 'package:propapp/screen/critical/critical_2.dart';
 import 'package:propapp/screen/critical/critical_3.dart';
@@ -29,6 +30,7 @@ class MiniEduApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+       initialRoute: '/',
       title: 'PropApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
