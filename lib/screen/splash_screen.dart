@@ -1,85 +1,64 @@
 import 'package:flutter/material.dart';
 
-class SplashScreen1 extends StatefulWidget {
+class SplashScreen1 extends StatelessWidget {
   const SplashScreen1({super.key});
 
   @override
-  State<SplashScreen1> createState() => _SplashScreen1State();
-}
-
-class _SplashScreen1State extends State<SplashScreen1> {
-  @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/intro');
     });
-
-
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/intro');
-    });
-
-
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF),
-      body: Stack(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      body: Column(
         children: [
-          // Konten tengah
-          Center(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: screenHeight * 0.25),
+          Expanded(
+            child: Center(
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: screenHeight * 0.1),
+                  // Menambah jarak vertikal di atas teks PROAPP
+                  const SizedBox(height: 80), // Menambahkan jarak ke atas
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
                         'assets/images/dadu.png',
-                        width: screenWidth * 0.2,
-                        height: screenWidth * 0.2,
+                        width: 75,
+                        height: 75,
                       ),
-                      SizedBox(width: screenWidth * 0.03),
-                      Text(
+                      const SizedBox(),
+                      const Text(
                         'PROAPP',
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: screenWidth * 0.08,
+                          fontSize: 36,
                           fontWeight: FontWeight.w400,
-                          color: const Color(0xFF1F2937),
+                          color: Color(0xFF1F2937),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: screenHeight * 0.01),
-                  Text(
+                  const SizedBox(), // Menambah jarak antara "PROAPP" dan deskripsi
+                  const Text(
                     'Application for Probability Lesson',
-                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: screenWidth * 0.035,
+                      fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: const Color(0xFF1F2937),
+                      color: Color(0xFF1F2937),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-
-          // Gambar robot menempel di bawah tanpa jarak putih
-          Align(
-            alignment: Alignment.bottomCenter,
+          SizedBox(
+            width: double.infinity,
             child: Image.asset(
               'assets/images/robot.png',
-              width: screenWidth,
-              height: screenHeight * 0.20,
-              fit: BoxFit.fill, // atau coba BoxFit.cover jika perlu
+              fit: BoxFit.cover, // Ganti dengan gambar bawah kamu
             ),
           ),
         ],

@@ -30,7 +30,7 @@ class MiniEduApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-       initialRoute: '/',
+      //  initialRoute: '/',
       title: 'PropApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

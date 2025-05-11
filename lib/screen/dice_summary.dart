@@ -124,12 +124,7 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
-              setState(() {
-                _currentQuestionIndex = 1;
-                _selectedAnswer = null;
-                _showFeedback = false;
-              });
+              Navigator.of(context).pushNamed('/multiple');
             },
             child: Text("OK"),
           ),
