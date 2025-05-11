@@ -159,7 +159,7 @@ class DiceResultsTablePage2 extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'Recap the entire experiment',
+                    'Continue Test 3',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,

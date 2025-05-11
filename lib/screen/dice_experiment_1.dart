@@ -12,7 +12,7 @@ class DiceExperimentPage1 extends StatefulWidget {
   State<DiceExperimentPage1> createState() => _DiceExperimentPage1State();
 }
 
-class _DiceExperimentPage1State extends State<DiceExperimentPage1> {
+class _DiceExperimentPage1State extends State<DiceExperimentPage1> with TickerProviderStateMixin {
   String? selectedOption;
 
   bool get hasSelection => selectedOption != null;
@@ -44,6 +44,8 @@ class _DiceExperimentPage1State extends State<DiceExperimentPage1> {
       results[roll.toString()] = (results[roll.toString()] ?? 0) + 1;
 
       if (roll % 2 == 0) {
+        results['genap'] = (results['genap'] ?? 0) + 1;
+      } else {
         results['genap'] = (results['genap'] ?? 0) + 1;
       } else {
         results['ganjil'] = (results['ganjil'] ?? 0) + 1;
@@ -307,3 +309,77 @@ class _DiceExperimentPage1State extends State<DiceExperimentPage1> {
     );
   }
 }
+
+// Implemented speed-controlled GIF widget for better animation control
+class SpeedControlledGif extends StatefulWidget {
+  final String assetPath;
+  final double speed;
+  final double width;
+  final double height;
+
+  const SpeedControlledGif({
+    Key? key,
+    required this.assetPath,
+    this.speed = 1.0,
+    this.width = 150,
+    this.height = 150,
+  }) : super(key: key);
+
+  @override
+  State<SpeedControlledGif> createState() => _SpeedControlledGifState();
+}
+
+class _SpeedControlledGifState extends State<SpeedControlledGif>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    // Start the animation with the specified speed
+    _controller.repeat(
+        period: Duration(milliseconds: (1000 / widget.speed).round()));
+  }
+
+  @override
+  void didUpdateWidget(SpeedControlledGif oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.speed != widget.speed) {
+      _controller.repeat(
+          period: Duration(milliseconds: (1000 / widget.speed).round()));
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return SizedBox(
+          width: widget.width,
+          height: widget.height,
+          child: Image.asset(
+            widget.assetPath,
+            gaplessPlayback: true,
+            // Use frameBuilder to add additional animation effects if needed
+            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+              // The frame parameter gives us information about which frame of the animation is currently showing
+              return child;
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
