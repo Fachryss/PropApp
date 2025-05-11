@@ -30,6 +30,7 @@ class MiniEduApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+       initialRoute: '/',
       title: 'PropApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -45,7 +46,7 @@ class MiniEduApp extends StatelessWidget {
           titleLarge: TextStyle(fontFamily: 'Poppins'),
         ),
       ),
-      home: ClosingPage(),
+      // home: SplashScreen1(),
       routes: appRoutes,
     );
   }

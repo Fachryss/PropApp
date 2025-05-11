@@ -39,6 +39,7 @@ dependencies:
   video_player: ^2.8.3
   gif: ^2.3.0
   flutter_gif: ^0.0.4
+  audioplayers: ^6.4.0
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,8 @@ flutter:
 
   assets:
   - assets/images/
+  - assets/images/
+  - assets/audio/
   - assets/images/dadu.gif
 
   fonts:
