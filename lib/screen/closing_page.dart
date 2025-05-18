@@ -41,11 +41,11 @@ class ClosingPage extends StatelessWidget {
               Spacer(),
               Column(
                 children: [
-                  // Image.asset(
-                  //   "assets/images/LogoMokletDev.jpg",
-                  //   width: 50,
-                  //   height: 50,
-                  // ),
+                  Image.asset(
+                    "assets/images/logo.jpg",
+                    width: 50,
+                    height: 50,
+                  ),
                   const SizedBox(height: 10),
                   const Text(
                     "Tim MokletDev",
