@@ -162,7 +162,7 @@ class _CritalPageState extends State<CritalPage> {
                               ? 'Continue Problem'
                               : 'Next',
                           style: TextStyle(
-                            fontSize: isSmallScreen ? 15 : 18,
+                            fontSize: isSmallScreen ? 13 : 18,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),

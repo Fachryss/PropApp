@@ -14,6 +14,8 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -23,29 +25,31 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 'Gaun berbahan apa yang akan\nkamu rekomendasikan?',
                 style: TextStyle(
-                  fontSize: 23,
+                  fontSize: screenWidth * 0.045,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1F2937),
+                  color: const Color(0xFF1F2937),
                 ),
               ),
               const SizedBox(height: 13),
-              const Text(
+              Text(
                 'Pilihlah berdasarkan analisismu dari masalah sebelumnya.',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: screenWidth * 0.035,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF6B7280),
+                  color: const Color(0xFF6B7280),
                 ),
               ),
-              const SizedBox(height: 30),
-              _buildOptionItem('Satin', Icons.auto_awesome_outlined),
-              const SizedBox(height: 27),
-              _buildOptionItem('Sutra', Icons.palette_outlined),
-              const SizedBox(height: 27),
-              _buildOptionItem('Sifon', Icons.energy_savings_leaf_outlined),
+              SizedBox(height: screenHeight * 0.03),
+              _buildOptionItem(
+                  'Satin', Icons.auto_awesome_outlined, screenWidth),
+              SizedBox(height: screenHeight * 0.02),
+              _buildOptionItem('Sutra', Icons.palette_outlined, screenWidth),
+              SizedBox(height: screenHeight * 0.02),
+              _buildOptionItem(
+                  'Sifon', Icons.energy_savings_leaf_outlined, screenWidth),
               const Spacer(),
               // Next button that appears only when at least one option is selected
               AnimatedOpacity(
@@ -85,7 +89,7 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
     );
   }
 
-  Widget _buildOptionItem(String text, IconData iconData) {
+  Widget _buildOptionItem(String text, IconData iconData, double screenWidth) {
     final isSelected = selcetedOption == text;
     return GestureDetector(
       onTap: () {
@@ -101,16 +105,16 @@ class _QuestionCheckboxPageState extends State<QuestionCheckboxPage> {
             children: [
               Icon(
                 iconData,
-                size: 25,
-                color: Color(0xFF1F2937),
+                size: screenWidth * 0.06,
+                color: const Color(0xFF1F2937),
               ),
               const SizedBox(width: 15),
               Text(
                 text,
-                style: const TextStyle(
-                  fontSize: 20,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1F2937),
+                  color: const Color(0xFF1F2937),
                 ),
               ),
             ],
