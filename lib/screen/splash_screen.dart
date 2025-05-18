@@ -5,9 +5,6 @@ class SplashScreen1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/intro');
-    });
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Column(
@@ -17,9 +14,7 @@ class SplashScreen1 extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Menambah jarak vertikal di atas teks PROAPP
-                  const SizedBox(height: 80), // Menambahkan jarak ke atas
-
+                  const SizedBox(height: 80),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -28,7 +23,8 @@ class SplashScreen1 extends StatelessWidget {
                         width: 75,
                         height: 75,
                       ),
-                      const SizedBox(),
+                      const SizedBox(
+                          width: 10), // beri sedikit jarak antar elemen
                       const Text(
                         'PROAPP',
                         style: TextStyle(
@@ -40,7 +36,7 @@ class SplashScreen1 extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(), // Menambah jarak antara "PROAPP" dan deskripsi
+                  const SizedBox(height: 10),
                   const Text(
                     'Application for Probability Lesson',
                     style: TextStyle(
@@ -54,12 +50,56 @@ class SplashScreen1 extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            width: double.infinity,
-            child: Image.asset(
-              'assets/images/robot.png',
-              fit: BoxFit.cover, // Ganti dengan gambar bawah kamu
-            ),
+          Stack(
+            children: [
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 200,
+                    child: Image.asset(
+                      'assets/images/robot.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 100,
+                    color: const Color(
+                        0xFFF4AD5A), // Warna tanah (ambil dari warna tanah gambar)
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 30,
+                left: 25,
+                right: 25,
+                child: SizedBox(
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/intro');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF1D2939), // teks gelap
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: const Text(
+                      'Start',
+                      style: TextStyle(
+                        color: Color(0xFF1D2939),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

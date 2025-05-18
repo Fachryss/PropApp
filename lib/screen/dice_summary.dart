@@ -119,14 +119,14 @@ class _ExperimentSummaryPageState extends State<ExperimentSummaryPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text("Selesai!"),
-        content: Text(
-            "Anda telah menyelesaikan semua pertanyaan. Terima kasih!"),
+        content:
+            Text("Anda telah menyelesaikan semua pertanyaan. Terima kasih!"),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/multiple');
+              Navigator.of(context).pushNamed('/kesimpulan');
             },
-            child: Text("OK"),
+            child: Text("Next"),
           ),
         ],
       ),

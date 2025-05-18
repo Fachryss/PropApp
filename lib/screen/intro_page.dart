@@ -92,7 +92,7 @@ class _IntroPageState extends State<IntroPage> {
                         ),
                         const SizedBox(height: 20),
                         const Text(
-                           'Sebuah brand skincare ingin mempromosikan produk serum wajah terbarunya. '
+                          'Sebuah brand skincare ingin mempromosikan produk serum wajah terbarunya. '
                           'Tiga pilihan strategi tersedia: giveaway Instagram, diskon 20%, dan kolaborasi dengan beauty influencer.\n\n'
                           'Namun, anggaran hanya cukup untuk dua. Berdasarkan data sebelumnya:\n\n'
                           '- Giveaway sukses 30%\n'
@@ -107,7 +107,7 @@ class _IntroPageState extends State<IntroPage> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  Spacer(),
                   SizedBox(
                     height: 56,
                     width: double.infinity,

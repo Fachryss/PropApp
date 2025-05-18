@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:propapp/screen/Kesimpulan_recap.dart';
 import 'package:propapp/screen/answer.dart';
 import 'package:propapp/screen/dice_experiment_1.dart';
 import 'package:propapp/screen/dice_experiment_2.dart';
@@ -8,7 +9,7 @@ import 'package:propapp/screen/dice_table_1.dart';
 import 'package:propapp/screen/question_checkbox_2.dart';
 import '../screen/splash_screen.dart';
 import '../screen/intro_page.dart';
-import '../screen/critical/critical_1.dart';
+import '../screen/critical/criticalPage.dart';
 import '../screen/critical/critical_2.dart';
 import '../screen/critical/critical_3.dart';
 import '../screen/question_checkbox.dart';
@@ -18,10 +19,9 @@ import '../screen/closing_page.dart';
 import 'package:propapp/screen/answer_recap.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
-
   '/': (_) => const SplashScreen1(),
   '/intro': (_) => const IntroPage(),
-  '/critical1': (_) => const Critical1Page(),
+  '/critical1': (_) => const CritalPage(),
   '/critical2': (_) => const Critical2Page(),
   '/critical3': (_) => const Critical3Page(),
   '/checkbox': (_) => const QuestionCheckboxPage(),
@@ -31,6 +31,7 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/dice2': (_) => const DiceExperimentPage2(),
   '/dice3': (_) => const DiceExperimentPage3(),
   '/diceSummary': (_) => const ExperimentSummaryPage(),
+  '/kesimpulan': (_) => const KesimpulanRecap(),
   '/correct_answer': (_) => const AnswerRecap(),
   '/multiple': (_) => const MultipleChoicePage(),
   '/closing': (_) => const ClosingPage(),

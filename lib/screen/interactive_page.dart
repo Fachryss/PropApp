@@ -21,7 +21,7 @@ class _ProbabilitySelectionPageState extends State<ProbabilitySelectionPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.fromLTRB(25, 20, 25, 51),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,23 +58,20 @@ class _ProbabilitySelectionPageState extends State<ProbabilitySelectionPage> {
                 ),
               ),
 
-              SizedBox(height: screenHeight * 0.035),
+              Spacer(),
 
               // Dice option (gambar dadu)
-              _buildSelectionItem(
-                'dice',
-                'Dadu',
-                Image.asset(
-                  'assets/images/Koin.png', // sesuai kode awal kamu
-                  color: Colors.white,
-                  width: double.infinity,
-                  height: 220,
-                  fit: BoxFit.contain,
-                ),
-              ),
-
-              SizedBox(height: screenHeight * 0.04),
-
+              // _buildSelectionItem(
+              //   'dice',
+              //   'Dadu',
+              //   Image.asset(
+              //     'assets/images/Koin.png', // sesuai kode awal kamu
+              //     color: Colors.white,
+              //     width: double.infinity,
+              //     height: 220,
+              //     fit: BoxFit.contain,
+              //   ),
+              // ),
               // Tombol Next
               AnimatedOpacity(
                 opacity: hasSelection ? 1.0 : 0.0,
