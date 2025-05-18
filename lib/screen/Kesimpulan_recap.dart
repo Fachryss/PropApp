@@ -293,9 +293,11 @@ class _KesimpulanRecapState extends State<KesimpulanRecap> {
                                       ],
                                     ),
                                     const SizedBox(height: 10),
-                                    const Text(
-                                      "Peluang kejadian adalah perbandingan banyaknya kejadian yang diharapkan (muncul) dengan total semua kejadian yang muncul.",
-                                      style: TextStyle(
+                                    Text(
+                                      isCorrect
+                                          ? "Peluang kejadian adalah perbandingan banyaknya kejadian yang diharapkan (muncul) dengan total semua kejadian yang muncul."
+                                          : "Jawaban belum tepat",
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         color: Color(0xFF1F2937),
                                       ),
