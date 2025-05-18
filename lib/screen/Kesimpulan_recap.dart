@@ -295,8 +295,8 @@ class _KesimpulanRecapState extends State<KesimpulanRecap> {
                                     const SizedBox(height: 10),
                                     Text(
                                       isCorrect
-                                          ? "Peluang kejadian adalah perbandingan banyaknya kejadian yang diharapkan (muncul) dengan total semua kejadian yang muncul."
-                                          : "Jawaban belum tepat",
+                                          ? "Peluang kejadian adalah perbandingan banyaknya kejadian yang diharapkan (muncul) dengan total semua kejadian yang muncul.\n\nBanyaknya kejadian yang muncul = n(A)\nTotal semua kejadiann yang muncul = n(S)"
+                                          : "Coba Lagi",
                                       style: const TextStyle(
                                         fontSize: 16,
                                         color: Color(0xFF1F2937),
@@ -310,22 +310,67 @@ class _KesimpulanRecapState extends State<KesimpulanRecap> {
                             if (isCorrect && showResult)
                               Container(
                                 width: double.infinity,
-                                margin: const EdgeInsets.only(top: 15),
-                                padding: const EdgeInsets.all(15),
+                                margin: const EdgeInsets.only(
+                                  top: 15,
+                                ),
+                                padding:
+                                    const EdgeInsets.fromLTRB(60, 10, 60, 10),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                      color: const Color(0xFFDBEAFE)),
+                                      color: const Color(0xFF1D2939)),
                                 ),
-                                child: const Text(
-                                  "P(A) = n(A) / n(S)",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF1F2937),
-                                  ),
-                                  textAlign: TextAlign.center,
+                                child: const Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "P(A)",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xFF1F2937),
+                                      ),
+                                    ),
+                                    Text(
+                                      "=",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xFF1F2937),
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          "n(A)",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xFF1F2937),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width:
+                                              60, // Sesuaikan dengan kebutuhan
+                                          child: Divider(
+                                            color: Colors.black,
+                                            thickness: 1.2,
+                                          ),
+                                        ),
+                                        Text(
+                                          "n(S)",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xFF1F2937),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                           ],
