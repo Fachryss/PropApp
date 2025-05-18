@@ -42,7 +42,7 @@ class ClosingPage extends StatelessWidget {
               Column(
                 children: [
                   Image.asset(
-                    "assets/images/logo.jpg",
+                    "assets/images/logo.png",
                     width: 50,
                     height: 50,
                   ),
