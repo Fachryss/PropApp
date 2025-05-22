@@ -8,6 +8,13 @@ class SummaryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int totalQuestions = questions.length;
+    final int correctAnswers = List.generate(userAnswers.length, (index) {
+      final userAnswer = userAnswers[index];
+      final correctAnswer = questions[index].correctAnswerIndex;
+      return userAnswer == correctAnswer ? 1 : 0;
+    }).fold(0, (sum, current) => sum + current);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -110,36 +117,54 @@ class SummaryPage extends StatelessWidget {
                           isCorrect: i == correctAnswer,
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                      )
+                      SizedBox(height: 40),
                     ],
                   );
                 },
               ),
-              const SizedBox(height: 120),
+              // --- SCORE CONTAINER ---
               Container(
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/closing');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF1F2937),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                decoration: BoxDecoration(
+                  color: Color(0xFFF3F4F6),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Center(
+                  child: Text(
+                    'Skor Anda: $correctAnswers / $totalQuestions',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins',
+                      color: Color(0xFF1F2937),
                     ),
-                    child: const Text(
-                      'Finish',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                      ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+
+              // --- FINISH BUTTON ---
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/closing');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF1F2937),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text(
+                    'Finish',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
